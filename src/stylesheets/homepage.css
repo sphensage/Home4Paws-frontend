@@ -1,0 +1,14 @@
+.bg-fix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 1);
+}
+
+.bg-image {
+  background-color: aquamarine;
+  background-image: url("src/assets/pet_img.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
