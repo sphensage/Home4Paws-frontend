@@ -1,0 +1,23 @@
+.bg {
+  background-image:
+    linear-gradient(rgba(139, 46, 88, 0.6), rgba(139, 46, 88, 0.6)),
+    url("src/assets/pet_img5_signup.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.form-box {
+  z-index: 2;
+}
+
+.form-bg-box {
+  align-items: center;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+  color: #8b2e58;
+  display: flex;
+  justify-content: center;
+  padding: 45px;
+  z-index: 1;
+}
