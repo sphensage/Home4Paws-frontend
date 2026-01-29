@@ -3,20 +3,80 @@
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 1);
+  z-index: 1;
 }
 
 .bg-image {
-  background-color: aquamarine;
-  background-image: url("src/assets/pet_img.jpg");
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bg-image::before,
+.bg-image::after,
+.bg-image .img3,
+.bg-image .img4 {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  opacity: 0;
+  animation: fade 16s infinite;
+}
+
+.bg-image::before {
+  background-image:
+    linear-gradient(rgba(139, 46, 88, 0.6), rgba(139, 46, 88, 0.6)),
+    url("src/assets/pet_img.jpg");
+  animation-delay: 0s;
+}
+
+.bg-image::after {
+  background-image:
+    linear-gradient(rgba(139, 46, 88, 0.6), rgba(139, 46, 88, 0.6)),
+    url("src/assets/pet_img2.png");
+  animation-delay: 4s;
+}
+
+.bg-image .img3 {
+  background-image:
+    linear-gradient(rgba(139, 46, 88, 0.6), rgba(139, 46, 88, 0.6)),
+    url("src/assets/pet_img3.jpg");
+  animation-delay: 8s;
+}
+
+.bg-image .img4 {
+  background-image:
+    linear-gradient(rgba(139, 46, 88, 0.6), rgba(139, 46, 88, 0.6)),
+    url("src/assets/pet_img4.jpg");
+  animation-delay: 12s;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .form-box {
-  padding: 30px;
+  padding: 50px;
   border-radius: 10px;
-  color: rgb(146, 70, 89);
+  color: #8b2e58;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }

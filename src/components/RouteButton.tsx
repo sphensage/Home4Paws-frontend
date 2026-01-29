@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 
 interface Props {
   children: string;
-  profile: string;
+  linkto: string;
   classes: string;
-  color: string;
+  textcolor: string;
 }
 
-const Button = ({ children, profile, classes, color }: Props) => {
+const Button = ({ children, linkto, classes, textcolor }: Props) => {
   return (
-    <Link to={"/" + profile}>
-      <button type="button" className={classes} style={{ color }}>
+    <Link to={"/" + linkto}>
+      <button type="button" className={classes} style={{ color: textcolor }}>
         {children}
       </button>
     </Link>

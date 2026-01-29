@@ -1,3 +1,8 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #8b2e58;
+}
+
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
