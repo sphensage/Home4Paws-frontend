@@ -28,7 +28,7 @@ const LoginForm = () => {
       <button
         type="button"
         className="btn btn-secondary w-100 mb-3"
-        style={{ background: "rgb(100, 62, 81)" }}
+        style={{ background: "rgb(146, 70, 89)", border: "0px solid black" }}
       >
         Login
       </button>
