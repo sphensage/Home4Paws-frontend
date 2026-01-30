@@ -61,7 +61,7 @@ const SignUpForm = () => {
     }
 
     form.classList.add("was-validated");
-    setHideTooltips(false); // Show tooltips again on new click
+    setHideTooltips(false);
   };
 
   const [birthDate, setBirthDate] = useState({ month: "", day: "", year: "" });
@@ -84,7 +84,7 @@ const SignUpForm = () => {
 
   const handleInput = () => {
     if (validated) {
-      setHideTooltips(true); // Hide tooltips only once typing starts
+      setHideTooltips(true);
     }
   };
 
