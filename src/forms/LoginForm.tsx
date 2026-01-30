@@ -2,8 +2,21 @@ import RouteButton from "../components/RouteButton";
 import "/src/stylesheets/loginform.css";
 
 const LoginForm = () => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.classList.add("was-validated");
+  };
+
   return (
-    <div className="form-box w-30">
+    <form
+      className="form-box w-30 needs-validation"
+      noValidate
+      onSubmit={handleSubmit}
+    >
       <p className="fw-bold fs-4 text-center">Home4Paws Login</p>
       <p
         className="mb-4 text-center"
@@ -21,16 +34,22 @@ const LoginForm = () => {
           className="form-control"
           id="emailInput"
           placeholder="name@example.com"
+          required
         />
       </div>
       <div className="mb-5">
         <label htmlFor="passwordInput" className="form-label">
           Password
         </label>
-        <input type="password" className="form-control" id="passwordInput" />
+        <input
+          type="password"
+          className="form-control"
+          id="passwordInput"
+          required
+        />
       </div>
       <button
-        type="button"
+        type="submit"
         className="btn btn-secondary w-100 mb-3"
         style={{ background: "#8b2e58", border: "0px solid black" }}
       >
@@ -43,7 +62,7 @@ const LoginForm = () => {
       >
         Sign up
       </RouteButton>
-    </div>
+    </form>
   );
 };
 

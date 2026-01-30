@@ -21,3 +21,17 @@
   padding: 45px;
   z-index: 1;
 }
+
+/* Bootstrap validation overrides */
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid,
+.form-control.is-valid,
+.was-validated .form-control:valid {
+  background-image: none !important;
+  padding-right: 0.75rem !important;
+}
+
+.hide-tooltips .invalid-tooltip {
+  display: none !important;
+}
