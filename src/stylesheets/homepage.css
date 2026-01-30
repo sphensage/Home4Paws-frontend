@@ -1,14 +1,29 @@
-.bg-fix {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 1);
+.bg-forum {
+  background-color: #efefef;
 }
 
-.bg-image {
-  background-color: aquamarine;
-  background-image: url("src/assets/pet_img.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
+.bg-image-homepage {
+  background-image:
+    linear-gradient(rgba(139, 46, 88, 0.6), rgba(139, 46, 88, 0.6)),
+    url("src/assets/pet_img5_signup.jpg");
   background-size: cover;
+  background-position: center;
+}
+
+.color-config {
+  color: #8b2e58;
+}
+
+.custom-btn {
+  background-color: #8b2e58;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+  background-color: #6e2446;
+}
+
+.nav-link.active {
+  font-weight: bold !important;
 }

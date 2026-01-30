@@ -14,7 +14,7 @@ const SignUpForm = () => {
   // State variables for form fields and validation:
 
   const [phone, setPhone] = useState<string>("");
-  const [validated, setValidated] = useState(false);
+  const [validated] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -48,11 +48,6 @@ const SignUpForm = () => {
       confirmInput.setCustomValidity("Passwords do not match");
     }
 
-    // Tooltip display handling:
-
-    const tooltips: NodeListOf<HTMLElement> =
-      form.querySelectorAll(".invalid-tooltip");
-
     // Final form validity check:
 
     if (!form.checkValidity()) {
@@ -67,7 +62,7 @@ const SignUpForm = () => {
   const [birthDate, setBirthDate] = useState({ month: "", day: "", year: "" });
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value, min, max } = e.target;
+    const { id, value, max } = e.target;
     let numericValue = parseInt(value);
 
     if (value === "") {
@@ -236,7 +231,7 @@ const SignUpForm = () => {
           <div className="invalid-tooltip">
             {confirmPassword === ""
               ? "Please confirm your password."
-              : "Passwords do not match."}
+              : "Password do not match."}
           </div>
         </div>
       </div>
