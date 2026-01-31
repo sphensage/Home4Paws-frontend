@@ -3,7 +3,7 @@ import "/src/stylesheets/homepage.css";
 const HomePageHeader = () => {
   return (
     <nav
-      className="navbar navbar-expand-lg bg-body-tertiary mt-3 ps-5 pe-5 pt-2 pb-2"
+      className="sticky-top navbar navbar-expand-lg bg-body-tertiary mt-3 ps-5 pe-5 pt-2 pb-2"
       style={{ zIndex: 1050 }}
     >
       <div className="container-fluid">

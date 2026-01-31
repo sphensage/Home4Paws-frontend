@@ -34,7 +34,7 @@ const HomePage = () => {
           welfare.
         </p>
         <button
-          className="btn fw-bold fs-6 mt-3 ps-4 pe-4"
+          className="btn fw-bold fs-5 mt-3 ps-4 pe-4"
           style={{
             backgroundColor: "white",
             color: "#8b2e58",

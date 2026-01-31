@@ -1,3 +1,6 @@
+import ForumHeader from "../components/forum/ForumHeader";
+import ForumContents from "../components/forum/ForumContents";
+
 interface HomePageForumProps {
   isMoved: boolean;
   setIsMoved: (isMoved: boolean) => void;
@@ -9,7 +12,11 @@ const HomePageForum = (props: HomePageForumProps) => {
   return (
     <div
       className="d-flex flex-column align-items-center justify-content-end vh-100 fixed-bottom"
-      style={{ color: "white" }}
+      style={{
+        color: "white",
+        opacity: isMoved ? 0 : 1,
+        transition: "opacity 0.3s ease-in-out",
+      }}
     >
       <div>
         <button
@@ -37,13 +44,20 @@ const HomePageForum = (props: HomePageForumProps) => {
           padding: "20px 50px",
           height: isMoved ? "calc(89% - 90%)" : "83%",
           transition: "height 0.4s ease-in-out, opacity 0.4s ease-in-out",
-          overflow: "hidden",
+          overflowY: "scroll",
+          boxSizing: "border-box",
         }}
       >
         <div
-          className="h-100 w-100"
-          style={{ backgroundColor: "rgba(0,0,0,0)" }}
-        ></div>
+          className="h-100 w-100 p-1"
+          style={{
+            backgroundColor: "rgba(0,0,0,0)",
+            boxSizing: "border-box",
+          }}
+        >
+          <ForumHeader />
+          <ForumContents />
+        </div>
       </div>
     </div>
   );
