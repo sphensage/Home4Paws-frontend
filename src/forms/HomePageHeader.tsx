@@ -2,9 +2,12 @@ import "/src/stylesheets/homepage.css";
 
 const HomePageHeader = () => {
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary mt-3 ps-5 pe-5 pt-3 pb-3">
+    <nav
+      className="navbar navbar-expand-lg bg-body-tertiary mt-3 ps-5 pe-5 pt-2 pb-2"
+      style={{ zIndex: 1050 }}
+    >
       <div className="container-fluid">
-        <h1 className="navbar-brand mb-0 fw-bold fs-4 color-config me-5">
+        <h1 className="navbar-brand mb-0 fw-bold fs-5 color-config me-5">
           <img
             src="/src/assets/favicon.ico"
             alt="Home4Paws Logo"
@@ -42,7 +45,7 @@ const HomePageHeader = () => {
             </li>
           </ul>
           <a
-            className="btn btn-secondary custom-btn fw-bold ps-3 pe-4"
+            className="btn btn-secondary custom-btn fw-bold fs-7 ps-3 pe-4"
             type="button"
             href="/login"
           >
