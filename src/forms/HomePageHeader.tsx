@@ -1,6 +1,13 @@
+import { Link } from "react-router-dom";
 import "/src/stylesheets/homepage.css";
+import { useState } from "react";
 
-const HomePageHeader = () => {
+interface HomePageHeaderProps {
+  whatSelected: string;
+}
+
+const HomePageHeader = (props: HomePageHeaderProps) => {
+  const [selected, setSelected] = useState(props.whatSelected);
   return (
     <nav
       className="sticky-top navbar navbar-expand-lg bg-body-tertiary mt-3 ps-5 pe-5 pt-2 pb-2"
@@ -29,19 +36,28 @@ const HomePageHeader = () => {
         <div className="collapse navbar-collapse" id="navbarText">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/">
+              <Link
+                to="/"
+                className={`nav-link ${selected === "home" ? "active" : ""}`}
+              >
                 Home
-              </a>
+              </Link>
             </li>
-            <li className="nav-item">
-              <a className="nav-link mx-5" href="/about">
+            <li className="nav-item mx-lg-5">
+              <Link
+                to="/about"
+                className={`nav-link ${selected === "about" ? "active" : ""}`}
+              >
                 About us
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/contact">
+              <Link
+                to="/contact"
+                className={`nav-link ${selected === "contact" ? "active" : ""}`}
+              >
                 Contact us
-              </a>
+              </Link>
             </li>
           </ul>
           <a

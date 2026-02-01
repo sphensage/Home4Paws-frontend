@@ -13,7 +13,25 @@ const HomePage = () => {
         className="h-100 w-100 position-absolute bg-image-homepage"
         style={{ backgroundColor: "black" }}
       >
-        <HomePageHeader />
+        <HomePageHeader whatSelected="home" />
+
+        {/* Level of components guide:
+             Homepage:
+                a. HomepageHeader
+
+                b. HomePageForum
+                    I. ForumNavbar
+
+                    II. ForumContents
+                        1. ForumHome
+                            a. ForumHomeHeader
+                            b. ForumPostItem
+
+                        2. ForumInbox
+                            a. ForumInboxHeader
+                            b. ForumInboxItem
+        */}
+
         <HomePageForum isMoved={isMoved} setIsMoved={setIsMoved} />
       </div>
       <div

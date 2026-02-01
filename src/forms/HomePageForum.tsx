@@ -1,5 +1,6 @@
-import ForumHeader from "../components/forum/ForumHeader";
+import { useState } from "react";
 import ForumContents from "../components/forum/ForumContents";
+import ForumNavbar from "../components/forum/ForumNavbar";
 
 interface HomePageForumProps {
   isMoved: boolean;
@@ -8,6 +9,7 @@ interface HomePageForumProps {
 
 const HomePageForum = (props: HomePageForumProps) => {
   const { isMoved, setIsMoved } = props;
+  const [navbarVariant, setNavbarVariant] = useState<"home" | "inbox">("home");
 
   return (
     <div
@@ -40,7 +42,6 @@ const HomePageForum = (props: HomePageForumProps) => {
         className="w-100"
         style={{
           backgroundColor: "#efefef",
-          // opacity: isMoved ? 0 : 1,
           padding: "20px 50px",
           height: isMoved ? "calc(89% - 90%)" : "83%",
           transition: "height 0.4s ease-in-out, opacity 0.4s ease-in-out",
@@ -55,8 +56,8 @@ const HomePageForum = (props: HomePageForumProps) => {
             boxSizing: "border-box",
           }}
         >
-          <ForumHeader />
-          <ForumContents />
+          <ForumNavbar variant={navbarVariant} />
+          <ForumContents onVariantChange={setNavbarVariant} />
         </div>
       </div>
     </div>
