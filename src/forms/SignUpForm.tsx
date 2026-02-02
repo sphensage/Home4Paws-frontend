@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "/src/stylesheets/signupform.css";
+import { useAuth } from "../AuthContext";
 
 function formatPhoneNumber(value: string): string {
   const digits = value.replace(/\D/g, "");
@@ -11,7 +13,8 @@ function formatPhoneNumber(value: string): string {
 }
 
 const SignUpForm = () => {
-  // State variables for form fields and validation:
+  const navigate = useNavigate();
+  const { signup } = useAuth(); // Use AuthContext instead of direct API call
 
   const [phone, setPhone] = useState<string>("");
   const [validated] = useState(false);
@@ -20,43 +23,75 @@ const SignUpForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [hideTooltips, setHideTooltips] = useState(false);
-
-  // Handlers for input changes and form submission:
+  const [isSubmitting, setIsSubmitting] = useState(false); // Loading state
 
   const handleNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setter: (val: string) => void,
+    setter: (val: string) => void
   ) => {
     const cleanValue = e.target.value.replace(/[^a-zA-Z\s]/g, "");
     setter(cleanValue);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const form = event.currentTarget;
     const passInput = document.getElementById(
-      "passwordInput",
+      "passwordInput"
     ) as HTMLInputElement;
     const confirmInput = document.getElementById(
-      "confirmPassInput",
+      "confirmPassInput"
     ) as HTMLInputElement;
 
     confirmInput.setCustomValidity("");
-
-    // Password matching validation:
 
     if (passInput.value !== confirmInput.value) {
       confirmInput.setCustomValidity("Passwords do not match");
     }
 
-    // Final form validity check:
-
     if (!form.checkValidity()) {
       event.preventDefault();
       event.stopPropagation();
+      form.classList.add("was-validated");
+      setHideTooltips(false);
+      return;
     }
 
     form.classList.add("was-validated");
     setHideTooltips(false);
+
+    // Prepare user data
+    const userData = {
+      name: `${firstName} ${lastName}`,
+      email: (document.getElementById("emailInput") as HTMLInputElement).value,
+      phone: phone,
+      password: password,
+      birthdate: `${(document.getElementById("year") as HTMLInputElement).value}-${String(
+        (document.getElementById("month") as HTMLInputElement).value
+      ).padStart(2, "0")}-${String(
+        (document.getElementById("day") as HTMLInputElement).value
+      ).padStart(2, "0")}`,
+    };
+
+    // Use AuthContext signup (handles token storage automatically)
+    setIsSubmitting(true);
+    try {
+      const result = await signup(userData);
+
+      if (result.success) {
+        // User is now logged in (token stored, user in context)
+        // Navigate to home page instead of login
+        navigate("/");
+      } else {
+        // Show error message
+        alert("Sign up failed: " + (result.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Unexpected error during sign-up:", error);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const [birthDate, setBirthDate] = useState({ month: "", day: "", year: "" });
@@ -239,8 +274,9 @@ const SignUpForm = () => {
         type="submit"
         className="btn btn-secondary w-100 mt-5"
         style={{ background: "#8b2e58", border: "0px solid black" }}
+        disabled={isSubmitting}
       >
-        Sign Up
+        {isSubmitting ? "Signing Up..." : "Sign Up"}
       </button>
     </form>
   );

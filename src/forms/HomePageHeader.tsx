@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 import "/src/stylesheets/homepage.css";
 import { useState } from "react";
 
@@ -8,6 +9,8 @@ interface HomePageHeaderProps {
 
 const HomePageHeader = (props: HomePageHeaderProps) => {
   const [selected, setSelected] = useState(props.whatSelected);
+  const { user, logout, loading } = useAuth();
+  const navigate = useNavigate();
   return (
     <nav
       className="sticky-top navbar navbar-expand-lg bg-body-tertiary mt-3 ps-5 pe-5 pt-2 pb-2"
@@ -60,20 +63,43 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
               </Link>
             </li>
           </ul>
-          <a
-            className="btn btn-secondary custom-btn fw-bold fs-7 ps-3 pe-4"
-            type="button"
-            href="/login"
-          >
-            <span>
-              <img
-                src="/src/assets/user_icon.svg"
-                alt="Login Icon"
-                className="me-2 mb-0"
-              />
-            </span>{" "}
-            Login
-          </a>
+          {!loading &&
+            (user ? (
+              <div className="d-flex align-items-center">
+                <span className="me-2">Hello, {user.name}</span>
+                <button
+                  className="btn btn-secondary custom-btn fw-bold fs-7 ps-3 pe-4"
+                  type="button"
+                  onClick={async () => {
+                    await logout();
+                    navigate("/login");
+                  }}
+                >
+                  <span>
+                    <img
+                      src="/src/assets/user_icon.svg"
+                      alt="User Icon"
+                      className="me-2 mb-0"
+                    />
+                  </span>
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="btn btn-secondary custom-btn fw-bold fs-7 ps-3 pe-4"
+              >
+                <span>
+                  <img
+                    src="/src/assets/user_icon.svg"
+                    alt="Login Icon"
+                    className="me-2 mb-0"
+                  />
+                </span>
+                Login
+              </Link>
+            ))}
         </div>
       </div>
     </nav>
