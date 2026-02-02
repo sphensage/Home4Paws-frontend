@@ -5,10 +5,12 @@ import ForumNavbar from "../components/forum/ForumNavbar";
 interface HomePageForumProps {
   isMoved: boolean;
   setIsMoved: (isMoved: boolean) => void;
+  showCreateModal: boolean;
+  setShowCreateModal: (show: boolean) => void;
 }
 
 const HomePageForum = (props: HomePageForumProps) => {
-  const { isMoved, setIsMoved } = props;
+  const { isMoved, setIsMoved, showCreateModal, setShowCreateModal } = props;
   const [navbarVariant, setNavbarVariant] = useState<"home" | "inbox">("home");
 
   return (
@@ -57,7 +59,11 @@ const HomePageForum = (props: HomePageForumProps) => {
           }}
         >
           <ForumNavbar variant={navbarVariant} />
-          <ForumContents onVariantChange={setNavbarVariant} />
+          <ForumContents
+            onVariantChange={setNavbarVariant}
+            showCreateModal={showCreateModal}
+            setShowCreateModal={setShowCreateModal}
+          />
         </div>
       </div>
     </div>

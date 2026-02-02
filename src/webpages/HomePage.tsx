@@ -2,10 +2,12 @@ import { useState } from "react";
 
 import HomePageForum from "../forms/HomePageForum";
 import HomePageHeader from "../forms/HomePageHeader";
+import CreatePostForm from "../forms/CreatePostForm";
 import "/src/stylesheets/homepage.css";
 
 const HomePage = () => {
   const [isMoved, setIsMoved] = useState(true);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   return (
     <>
@@ -32,7 +34,12 @@ const HomePage = () => {
                             b. ForumInboxItem
         */}
 
-        <HomePageForum isMoved={isMoved} setIsMoved={setIsMoved} />
+        <HomePageForum
+          isMoved={isMoved}
+          setIsMoved={setIsMoved}
+          showCreateModal={showCreateModal}
+          setShowCreateModal={setShowCreateModal}
+        />
       </div>
       <div
         className="d-flex flex-column align-items-start justify-content-center position-absolute w-100 h-100 ps-5 align-middle"
@@ -68,6 +75,36 @@ const HomePage = () => {
           Visit forum
         </button>
       </div>
+      {showCreateModal && (
+        <div
+          id="modal-backdrop"
+          className="modal-backdrop-custom"
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            className="modal-content-custom"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "white",
+              borderRadius: 8,
+              padding: 20,
+              width: "min(720px, 95%)",
+              maxHeight: "85vh",
+              overflow: "auto",
+            }}
+          >
+            <CreatePostForm onClose={() => setShowCreateModal(false)} />
+          </div>
+        </div>
+      )}
     </>
   );
 };
