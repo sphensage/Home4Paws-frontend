@@ -70,7 +70,6 @@ const CreatePostForm = ({ onClose }: CreatePostFormProps) => {
         id="postImage"
         multiple
         accept="image/*"
-        style={{ overflow: "scroll" }}
       />
       <div className="d-flex flex-row gap-2 mt-4 w-100 justify-content-between justify-content-md-start">
         <button

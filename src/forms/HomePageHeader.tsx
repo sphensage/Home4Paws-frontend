@@ -7,7 +7,7 @@ interface HomePageHeaderProps {
 }
 
 const HomePageHeader = (props: HomePageHeaderProps) => {
-  const [selected, setSelected] = useState(props.whatSelected);
+  const [selected] = useState(props.whatSelected);
   return (
     <nav
       className="sticky-top navbar navbar-expand-lg bg-body-tertiary mt-3 ps-5 pe-5 pt-2 pb-2"

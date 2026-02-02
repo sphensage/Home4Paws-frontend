@@ -75,6 +75,7 @@ const HomePage = () => {
           Visit forum
         </button>
       </div>
+
       {showCreateModal && (
         <div
           id="modal-backdrop"

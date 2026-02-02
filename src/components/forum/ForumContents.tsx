@@ -114,13 +114,13 @@ const ForumContents = ({
       <div
         className="h-100"
         style={{
-          backgroundColor: "white",
+          backgroundColor: "rgba(0,0,0,0)",
           borderRadius: "7px",
           flex: "9",
         }}
       >
         {active === "home" && (
-          <div>
+          <div style={{ height: "100%" }}>
             <ForumHome />
           </div>
         )}

@@ -10,7 +10,12 @@ const ForumNavbar = ({ variant }: ForumNavbarProps) => {
     >
       <div className="d-flex flex-column flex-md-row w-100 justify-content-between align-items-lg-center px-3 gap-3">
         <div className="col-12 col-md-3">
-          <h1 className="navbar-brand mb-0 fw-bold fs-4 color-config">
+          <h1 className="mb-0 fw-bold fs-4 color-config">
+            <img
+              src="/src/assets/forum_icon.svg"
+              className="me-3"
+              alt="forum icon"
+            />
             Paw Forum
           </h1>
         </div>

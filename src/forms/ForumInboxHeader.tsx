@@ -7,7 +7,7 @@ const ForumInboxHeader = () => {
       style={{ backgroundColor: "#8b2e58", borderRadius: "7px" }}
     >
       <div className="text-white col-7 ps-4">
-        <p className="mb-0">Notification history</p>
+        <p className="mb-0">Inbox history</p>
       </div>
     </div>
   );
