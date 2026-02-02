@@ -4,9 +4,14 @@ import ForumHome from "./ForumHome";
 
 interface ForumContentsProps {
   onVariantChange?: (variant: "home" | "inbox") => void;
+  showCreateModal: boolean;
+  setShowCreateModal: (show: boolean) => void;
 }
 
-const ForumContents = ({ onVariantChange }: ForumContentsProps) => {
+const ForumContents = ({
+  onVariantChange,
+  setShowCreateModal,
+}: ForumContentsProps) => {
   const [active, setActive] = useState<"home" | "inbox">("home");
 
   const activeColorFilter =
@@ -86,18 +91,36 @@ const ForumContents = ({ onVariantChange }: ForumContentsProps) => {
             Inbox
           </button>
         </div>
+        <button
+          type="button"
+          className="btn btn-primary w-100"
+          style={{
+            backgroundColor: "#8B2E58",
+            border: "none",
+            marginTop: "20px",
+          }}
+          onClick={() => setShowCreateModal(true)}
+        >
+          <div
+            className="d-flex flex-row align-items-center justify-content-between px-3"
+            style={{ height: "2.25rem" }}
+          >
+            Create new post
+            <img src="/src/assets/create_post_icon.svg" alt="create post" />
+          </div>
+        </button>
       </div>
 
       <div
         className="h-100"
         style={{
-          backgroundColor: "white",
+          backgroundColor: "rgba(0,0,0,0)",
           borderRadius: "7px",
           flex: "9",
         }}
       >
         {active === "home" && (
-          <div>
+          <div style={{ height: "100%" }}>
             <ForumHome />
           </div>
         )}

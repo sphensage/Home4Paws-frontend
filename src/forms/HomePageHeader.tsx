@@ -8,7 +8,7 @@ interface HomePageHeaderProps {
 }
 
 const HomePageHeader = (props: HomePageHeaderProps) => {
-  const [selected, setSelected] = useState(props.whatSelected);
+  const [selected] = useState(props.whatSelected);
   const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
   return (
