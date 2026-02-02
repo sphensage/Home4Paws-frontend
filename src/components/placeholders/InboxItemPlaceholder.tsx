@@ -1,6 +1,6 @@
 // import React from 'react'
 
-const ForumInboxItem = () => {
+const InboxItemPlaceholder = () => {
   return (
     // PLACEHOLDER CARD, use typescript to actually display the items !!!
     <div
@@ -28,4 +28,4 @@ const ForumInboxItem = () => {
   );
 };
 
-export default ForumInboxItem;
+export default InboxItemPlaceholder;
