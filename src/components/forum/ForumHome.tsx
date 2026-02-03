@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react"; // Added useEffect & useStat
 import ForumHomeHeader from "../../forms/ForumHomeHeader";
 import ForumPostItem from "../forum item/ForumPostItem";
 import { getPaws, type PawsListing } from "../../api"; // Ensure this path is correct
+import DummyPostItem from "../dummies/DummyPostItem";
 
 interface ForumHomeProps {
   showPostItemModal: boolean;
   setShowPostItemModal: (show: boolean) => void;
-  setActivePaw: (paw: PawsListing) => void; 
+  setActivePaw: (paw: PawsListing) => void;
 }
 
 const ForumHome = ({
@@ -43,8 +44,10 @@ const ForumHome = ({
           height: "370px",
         }}
       >
+        <DummyPostItem />
+
         {/* 3. Logic to show either data or placeholders */}
-        {loading ? (
+        {/* {loading ? (
           // Show 3 placeholders while loading
           <>
             <ForumPostItem showPostItemModal={false} setShowPostItemModal={() => {}} />
@@ -68,7 +71,7 @@ const ForumHome = ({
           ))
         ) : (
           <div className="text-center text-muted mt-5">No posts yet. Be the first to post!</div>
-        )}
+        )} */}
       </div>
     </div>
   );

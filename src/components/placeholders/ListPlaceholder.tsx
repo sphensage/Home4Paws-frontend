@@ -1,5 +1,5 @@
-import InboxItemPlaceholder from "./inboxItemPlaceholder";
-import PostItemPlaceholder from "./postItemPlaceholder";
+import InboxItemPlaceholder from "./InboxItemPlaceholder";
+import PostItemPlaceholder from "./PostItemPlaceholder";
 
 interface Props {
   type: string;
