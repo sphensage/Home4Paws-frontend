@@ -2,8 +2,17 @@
 
 import ForumHomeHeader from "../../forms/ForumHomeHeader";
 import ForumPostItem from "../forum item/ForumPostItem";
+import ListPlaceholder from "../placeholders/ListPlaceholder";
 
-const ForumHome = () => {
+interface ForumHomeProps {
+  showPostItemModal: boolean;
+  setShowPostItemModal: (show: boolean) => void;
+}
+
+const ForumHome = ({
+  showPostItemModal,
+  setShowPostItemModal,
+}: ForumHomeProps) => {
   return (
     <div style={{ height: "100%" }}>
       <ForumHomeHeader />
@@ -13,15 +22,45 @@ const ForumHome = () => {
         style={{
           overflowY: "auto",
           // backgroundColor: "black",
-          height: "385px",
+          height: "370px",
         }}
       >
-        {/* For placeholder, e.g. if the page is loading */}
-        <ForumPostItem />
-        <ForumPostItem />
-        <ForumPostItem />
-        <ForumPostItem />
+        <ForumPostItem
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
+        />
+        <ForumPostItem
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
+        />
+        <ForumPostItem
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
+        />
+        <ForumPostItem
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
+        />
+        <ForumPostItem
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
+        />
+        <ForumPostItem
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
+        />
+        <ForumPostItem
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
+        />
+        <ForumPostItem
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
+        />
       </div>
+
+      {/* Disable this if page has been loaded */}
+      {/* <ListPlaceholder type="post" /> */}
     </div>
   );
 };

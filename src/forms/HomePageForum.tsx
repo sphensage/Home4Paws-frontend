@@ -7,10 +7,19 @@ interface HomePageForumProps {
   setIsMoved: (isMoved: boolean) => void;
   showCreateModal: boolean;
   setShowCreateModal: (show: boolean) => void;
+  showPostItemModal: boolean;
+  setShowPostItemModal: (show: boolean) => void;
 }
 
 const HomePageForum = (props: HomePageForumProps) => {
-  const { isMoved, setIsMoved, showCreateModal, setShowCreateModal } = props;
+  const {
+    isMoved,
+    setIsMoved,
+    showCreateModal,
+    setShowCreateModal,
+    showPostItemModal,
+    setShowPostItemModal,
+  } = props;
   const [navbarVariant, setNavbarVariant] = useState<"home" | "inbox">("home");
 
   return (
@@ -63,6 +72,8 @@ const HomePageForum = (props: HomePageForumProps) => {
             onVariantChange={setNavbarVariant}
             showCreateModal={showCreateModal}
             setShowCreateModal={setShowCreateModal}
+            showPostItemModal={showPostItemModal}
+            setShowPostItemModal={setShowPostItemModal}
           />
         </div>
       </div>

@@ -19,7 +19,7 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
       <div className="container-fluid">
         <h1 className="navbar-brand mb-0 fw-bold fs-5 color-config me-5">
           <img
-            src="/src/assets/favicon.ico"
+            src="/src/assets/favicon.svg"
             alt="Home4Paws Logo"
             className="me-3"
           />

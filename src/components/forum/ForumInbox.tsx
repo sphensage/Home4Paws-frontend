@@ -1,12 +1,12 @@
 // import React from "react";
 import ForumInboxHeader from "../../forms/ForumInboxHeader";
-import ForumInboxItem from "../forum item/ForumInboxItem";
+import ListPlaceholder from "../placeholders/ListPlaceholder";
 
 const ForumInbox = () => {
   return (
     <div style={{ height: "100%" }}>
       <ForumInboxHeader />
-      <div
+      {/* <div
         id="inboxesContainer"
         className="d-flex flex-column w-100 mt-4 gap-3"
         style={{
@@ -15,12 +15,10 @@ const ForumInbox = () => {
           height: "370px",
         }}
       >
-        {/* For placeholder, e.g. if the page is loading */}
-        <ForumInboxItem />
-        <ForumInboxItem />
-        <ForumInboxItem />
-        <ForumInboxItem />
-      </div>
+      </div> */}
+
+      {/* Disable this if page has been loaded */}
+      <ListPlaceholder type="inbox" />
     </div>
   );
 };

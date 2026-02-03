@@ -4,10 +4,12 @@ import HomePageForum from "../forms/HomePageForum";
 import HomePageHeader from "../forms/HomePageHeader";
 import CreatePostForm from "../forms/CreatePostForm";
 import "/src/stylesheets/homepage.css";
+import PostDisplay from "../components/item display/PostDisplay";
 
 const HomePage = () => {
   const [isMoved, setIsMoved] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showPostItemModal, setShowPostItemModal] = useState(false);
 
   return (
     <>
@@ -39,6 +41,8 @@ const HomePage = () => {
           setIsMoved={setIsMoved}
           showCreateModal={showCreateModal}
           setShowCreateModal={setShowCreateModal}
+          showPostItemModal={showPostItemModal}
+          setShowPostItemModal={setShowPostItemModal}
         />
       </div>
       <div
@@ -103,6 +107,36 @@ const HomePage = () => {
             }}
           >
             <CreatePostForm onClose={() => setShowCreateModal(false)} />
+          </div>
+        </div>
+      )}
+
+      {showPostItemModal && (
+        <div
+          onClick={() => setShowPostItemModal(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "white",
+              borderRadius: 8,
+              padding: 20,
+              width: "min(720px, 95%)",
+              maxHeight: "85vh",
+              overflow: "auto",
+              color: "#8b2e58",
+            }}
+          >
+            <PostDisplay />
           </div>
         </div>
       )}

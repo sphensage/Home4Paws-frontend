@@ -6,11 +6,15 @@ interface ForumContentsProps {
   onVariantChange?: (variant: "home" | "inbox") => void;
   showCreateModal: boolean;
   setShowCreateModal: (show: boolean) => void;
+  showPostItemModal: boolean;
+  setShowPostItemModal: (show: boolean) => void;
 }
 
 const ForumContents = ({
   onVariantChange,
   setShowCreateModal,
+  showPostItemModal,
+  setShowPostItemModal,
 }: ForumContentsProps) => {
   const [active, setActive] = useState<"home" | "inbox">("home");
 
@@ -121,7 +125,10 @@ const ForumContents = ({
       >
         {active === "home" && (
           <div style={{ height: "100%" }}>
-            <ForumHome />
+            <ForumHome
+              showPostItemModal={showPostItemModal}
+              setShowPostItemModal={setShowPostItemModal}
+            />
           </div>
         )}
 
