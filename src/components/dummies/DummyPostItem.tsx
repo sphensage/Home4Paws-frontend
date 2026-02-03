@@ -40,3 +40,5 @@ const DummyPostItem = () => {
     </button>
   );
 };
+
+export default DummyPostItem;
