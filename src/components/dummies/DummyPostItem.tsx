@@ -1,5 +1,3 @@
-import type { PawsListing } from "../../api";
-
 const DummyPostItem = () => {
   return (
     <button

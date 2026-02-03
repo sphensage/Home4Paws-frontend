@@ -25,8 +25,19 @@ const DummyInboxItem = ({ isLiked }: Props) => {
         >
           <img src="/src/assets/user_icon.svg" alt="user icon" />
         </div>
-        <div id="inboxDescription" className="text-black fw-bold ms-3 col-8">
-          'user' has reacted to your <a href="/">post</a>!
+        <div
+          id="inboxDescription"
+          className="d-flextext-black fw-bold ms-3 col-8"
+        >
+          {isLiked ? (
+            <p className="mb-0 text-black">
+              'user' has reacted to your <a href="/">post</a>!
+            </p>
+          ) : (
+            <p className="mb-0 text-black">
+              'user' copied your email! Go check it out!
+            </p>
+          )}
         </div>
       </div>
       <div className="col-4 d-flex flex-row justify-content-center align-items-center pe-4">

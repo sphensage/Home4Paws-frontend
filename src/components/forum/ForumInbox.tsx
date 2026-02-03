@@ -16,7 +16,8 @@ const ForumInbox = () => {
           height: "370px",
         }}
       >
-        <DummyInboxItem />
+        <DummyInboxItem isLiked={true} />
+        <DummyInboxItem isLiked={false} />
       </div>
 
       {/* Disable this if page has been loaded */}
