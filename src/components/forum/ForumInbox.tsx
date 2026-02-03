@@ -1,12 +1,13 @@
 // import React from "react";
 import ForumInboxHeader from "../../forms/ForumInboxHeader";
+import DummyInboxItem from "../dummies/DummyInboxItem";
 import ListPlaceholder from "../placeholders/ListPlaceholder";
 
 const ForumInbox = () => {
   return (
     <div style={{ height: "100%" }}>
       <ForumInboxHeader />
-      {/* <div
+      <div
         id="inboxesContainer"
         className="d-flex flex-column w-100 mt-4 gap-3"
         style={{
@@ -15,10 +16,12 @@ const ForumInbox = () => {
           height: "370px",
         }}
       >
-      </div> */}
+        <DummyInboxItem isLiked={true} />
+        <DummyInboxItem isLiked={false} />
+      </div>
 
       {/* Disable this if page has been loaded */}
-      <ListPlaceholder type="inbox" />
+      {/* <ListPlaceholder type="inbox" /> */}
     </div>
   );
 };
