@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ForumContents from "../components/forum/ForumContents";
 import ForumNavbar from "../components/forum/ForumNavbar";
+import type { PawsListing } from "../api";
 
 interface HomePageForumProps {
   isMoved: boolean;
@@ -9,6 +10,7 @@ interface HomePageForumProps {
   setShowCreateModal: (show: boolean) => void;
   showPostItemModal: boolean;
   setShowPostItemModal: (show: boolean) => void;
+  setActivePaw: (paw: PawsListing | null) => void;
 }
 
 const HomePageForum = (props: HomePageForumProps) => {
@@ -19,6 +21,7 @@ const HomePageForum = (props: HomePageForumProps) => {
     setShowCreateModal,
     showPostItemModal,
     setShowPostItemModal,
+    setActivePaw,
   } = props;
   const [navbarVariant, setNavbarVariant] = useState<"home" | "inbox">("home");
 
@@ -74,6 +77,7 @@ const HomePageForum = (props: HomePageForumProps) => {
             setShowCreateModal={setShowCreateModal}
             showPostItemModal={showPostItemModal}
             setShowPostItemModal={setShowPostItemModal}
+            setActivePaw={setActivePaw}
           />
         </div>
       </div>

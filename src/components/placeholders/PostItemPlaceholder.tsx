@@ -1,18 +1,18 @@
 // import React from 'react'
 
-const PostItemPlaceholder = () => {
-  return (
-    // PLACEHOLDER CARD, use typescript to actually display the items !!!
-    <button
-      id="postItem"
-      className="d-flex flex-row justify-content-between align-items-center w-100 flex-shrink-0 placeholder-glow"
-      style={{
-        border: "none",
-        backgroundColor: "white",
-        borderRadius: "7px",
-        height: "4.5rem",
-      }}
-    >
+  const PostItemPlaceholder = () => {
+    return (
+      // PLACEHOLDER CARD, use typescript to actually display the items !!!
+      <button
+        id="postItem"
+        className="d-flex flex-row justify-content-between align-items-center w-100 flex-shrink-0 placeholder-glow"
+        style={{
+          border: "none",
+          backgroundColor: "white",
+          borderRadius: "7px",
+          height: "4.5rem",
+        }}
+      >
       <div className="col-6 d-flex flex-row justify-content-start align-items-center">
         <div
           id="profileIconBox"

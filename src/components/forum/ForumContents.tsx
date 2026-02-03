@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ForumInbox from "./ForumInbox";
 import ForumHome from "./ForumHome";
+import type { PawsListing } from "../../api";
 
 interface ForumContentsProps {
   onVariantChange?: (variant: "home" | "inbox") => void;
@@ -8,6 +9,7 @@ interface ForumContentsProps {
   setShowCreateModal: (show: boolean) => void;
   showPostItemModal: boolean;
   setShowPostItemModal: (show: boolean) => void;
+  setActivePaw: (paw: PawsListing | null) => void;
 }
 
 const ForumContents = ({
@@ -15,6 +17,7 @@ const ForumContents = ({
   setShowCreateModal,
   showPostItemModal,
   setShowPostItemModal,
+   setActivePaw
 }: ForumContentsProps) => {
   const [active, setActive] = useState<"home" | "inbox">("home");
 
@@ -128,6 +131,7 @@ const ForumContents = ({
             <ForumHome
               showPostItemModal={showPostItemModal}
               setShowPostItemModal={setShowPostItemModal}
+              setActivePaw={setActivePaw}
             />
           </div>
         )}

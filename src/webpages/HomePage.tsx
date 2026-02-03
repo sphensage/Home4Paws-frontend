@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { PawsListing } from "../api"; 
 
 import HomePageForum from "../forms/HomePageForum";
 import HomePageHeader from "../forms/HomePageHeader";
@@ -7,6 +8,7 @@ import "/src/stylesheets/homepage.css";
 import PostDisplay from "../components/item display/PostDisplay";
 
 const HomePage = () => {
+  const [activePaw, setActivePaw] = useState<PawsListing | null>(null);
   const [isMoved, setIsMoved] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showPostItemModal, setShowPostItemModal] = useState(false);
@@ -43,6 +45,7 @@ const HomePage = () => {
           setShowCreateModal={setShowCreateModal}
           showPostItemModal={showPostItemModal}
           setShowPostItemModal={setShowPostItemModal}
+          setActivePaw={setActivePaw} 
         />
       </div>
       <div
@@ -111,7 +114,7 @@ const HomePage = () => {
         </div>
       )}
 
-      {showPostItemModal && (
+      {showPostItemModal && activePaw && (
         <div
           onClick={() => setShowPostItemModal(false)}
           style={{
@@ -136,7 +139,7 @@ const HomePage = () => {
               color: "#8b2e58",
             }}
           >
-            <PostDisplay />
+            <PostDisplay paw={activePaw} />
           </div>
         </div>
       )}

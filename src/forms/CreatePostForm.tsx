@@ -1,22 +1,63 @@
-// import React from 'react'
+import { useState } from "react";
+import { useAuth } from "../AuthContext";
+import { createPaw } from "../api";
 
 interface CreatePostFormProps {
-  onClose?: () => void;
+  onClose: () => void;
+  onSuccess?: () => void;
 }
 
-const CreatePostForm = ({ onClose }: CreatePostFormProps) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
+  const { user } = useAuth();
+  
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const form = event.currentTarget;
 
-    // Final form validity check:
-
     if (!form.checkValidity()) {
-      event.preventDefault();
       event.stopPropagation();
+      form.classList.add("was-validated");
+      return;
     }
 
     form.classList.add("was-validated");
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await createPaw({
+        title,
+        description,
+        location,
+      });
+
+      if (result.success) {
+        onSuccess?.();
+        onClose();
+      } else {
+        setError(result.message || "Failed to create post");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (!user) {
+    return (
+      <div className="text-center p-4">
+        <p>Please <a href="/login">login</a> to create a post.</p>
+        <button className="btn btn-secondary" onClick={onClose}>Close</button>
+      </div>
+    );
+  }
 
   return (
     <form
@@ -26,6 +67,9 @@ const CreatePostForm = ({ onClose }: CreatePostFormProps) => {
       noValidate
     >
       <h3 className="fw-bold">Create New Post</h3>
+      
+      {error && <div className="alert alert-danger">{error}</div>}
+
       <label htmlFor="postTitle" className="form-label mt-3">
         Post Title
       </label>
@@ -34,8 +78,11 @@ const CreatePostForm = ({ onClose }: CreatePostFormProps) => {
         type="text"
         className="form-control"
         placeholder="What is the title of your post?"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         required
-      ></input>
+      />
+
       <label htmlFor="postDescription" className="form-label mt-3">
         Post Description
       </label>
@@ -44,8 +91,11 @@ const CreatePostForm = ({ onClose }: CreatePostFormProps) => {
         className="form-control"
         placeholder="What is your post all about?"
         rows={5}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         required
-      ></textarea>
+      />
+
       <label htmlFor="postLocation" className="form-label mt-3">
         Location
       </label>
@@ -53,13 +103,16 @@ const CreatePostForm = ({ onClose }: CreatePostFormProps) => {
         id="postLocation"
         className="form-select"
         aria-label="Select Location"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
         required
       >
         <option value="">-- Select location --</option>
-        <option>Caloocan</option>
-        <option>Metro Manila</option>
-        <option>Quezon City</option>
+        <option value="Caloocan">Caloocan</option>
+        <option value="Metro Manila">Metro Manila</option>
+        <option value="Quezon City">Quezon City</option>
       </select>
+
       <label htmlFor="postImage" className="form-label mt-3">
         Additional Pictures{" "}
         <span className="text-muted">(Optional, 3 maximum)</span>
@@ -71,16 +124,22 @@ const CreatePostForm = ({ onClose }: CreatePostFormProps) => {
         multiple
         accept="image/*"
       />
+
       <div className="d-flex flex-row gap-2 mt-4 w-100 justify-content-between justify-content-md-start">
         <button
           className="btn btn-secondary col-6 col-md-2"
           type="button"
           onClick={onClose}
+          disabled={loading}
         >
           Cancel
         </button>
-        <button className="btn btn-primary col-6 col-md-2" type="submit">
-          Post
+        <button 
+          className="btn btn-primary col-6 col-md-2" 
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? "Posting..." : "Post"}
         </button>
       </div>
     </form>
