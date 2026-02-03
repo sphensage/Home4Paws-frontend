@@ -1,8 +1,27 @@
 type ForumNavbarProps = {
   variant: "home" | "inbox";
+  // The Props from HomePage
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+  selectedCity: string;
+  setSelectedCity: (val: string) => void;
+  currentPage: number;
+  lastPage: number;
+  onNext: () => void;
+  onPrev: () => void;
 };
 
-const ForumNavbar = ({ variant }: ForumNavbarProps) => {
+const ForumNavbar = ({ 
+  variant, 
+  searchQuery, 
+  setSearchQuery, 
+  selectedCity, 
+  setSelectedCity,
+  currentPage,
+  lastPage,
+  onNext,
+  onPrev 
+}: ForumNavbarProps) => {
   return (
     <nav
       className="navbar navbar-expand-lg bg-body-tertiary ps-2 pe-2 pt-3 pb-3"
@@ -21,25 +40,41 @@ const ForumNavbar = ({ variant }: ForumNavbarProps) => {
         </div>
         <div className="flex-grow-1">
           {variant === "home" && (
-            <form className="d-flex w-100" role="search">
+            <div className="d-flex w-100">
               <div className="dropdown me-2">
-                <select className="form-select">
-                  <option>Caloocan</option>
-                  <option>Metro Manila</option>
-                  <option>Quezon City</option>
+                {/* 1. Connected the City Filter */}
+                <select 
+                  className="form-select" 
+                  value={selectedCity} 
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                >
+                  <option value="All">All Locations</option>
+                  <option value="Caloocan">Caloocan</option>
+                  <option value="Metro Manila">Metro Manila</option>
+                  <option value="Quezon City">Quezon City</option>
                 </select>
               </div>
+              {/* 2. Connected the Search Box */}
               <input
                 className="form-control"
                 type="search"
                 placeholder="Search for posts..."
                 aria-label="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
-            </form>
+            </div>
           )}
         </div>
-        <button className="btn btn-secondary">previous</button>
-        <button className="btn btn-secondary">next</button>
+        <button className="btn btn-secondary" onClick={onPrev} 
+          disabled={currentPage <= 1} 
+          >previous
+        </button>
+        <button className="btn btn-secondary" 
+        onClick={onNext} 
+        disabled={currentPage >= lastPage}>
+            next
+        </button>
       </div>
     </nav>
   );

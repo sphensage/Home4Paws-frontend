@@ -1,73 +1,48 @@
-import React, { useEffect, useState } from "react"; // Added useEffect & useState
-
+import React from "react";
 import ForumHomeHeader from "../../forms/ForumHomeHeader";
 import ForumPostItem from "../forum item/ForumPostItem";
-import { getPaws, type PawsListing } from "../../api"; // Ensure this path is correct
+import { type PawsListing } from "../../api"; 
+import { useAuth } from "../../AuthContext";
 
 interface ForumHomeProps {
-  showPostItemModal: boolean;
+  // REMOVE showPostItemModal - it's unused here
   setShowPostItemModal: (show: boolean) => void;
   setActivePaw: (paw: PawsListing) => void; 
+  paws: PawsListing[]; // ADD THIS: Coming from HomePage
+  loading: boolean;    // ADD THIS: Coming from HomePage
 }
 
 const ForumHome = ({
-  showPostItemModal,
   setShowPostItemModal,
   setActivePaw,
+  paws,    // Received as prop
+  loading, // Received as prop
 }: ForumHomeProps) => {
-  // 1. Create state to hold your posts
-  const [paws, setPaws] = useState<PawsListing[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { user } = useAuth(); 
 
-  // 2. Fetch data when the component mounts
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const result = await getPaws();
-      if (result.success && result.paws) {
-        setPaws(result.paws);
-      }
-      setLoading(false);
-    };
-
-    fetchPosts();
-  }, []);
+  // NOTE: useEffect and local paws state ARE GONE. 
+  // This component now just displays what the Parent gives it.
 
   return (
     <div style={{ height: "100%" }}>
       <ForumHomeHeader />
-      <div
-        id="postsContainer"
-        className="d-flex flex-column w-100 mt-4 gap-3"
-        style={{
-          overflowY: "auto",
-          height: "370px",
-        }}
-      >
-        {/* 3. Logic to show either data or placeholders */}
+      <div id="postsContainer" className="d-flex flex-column w-100 mt-4 gap-3" style={{ overflowY: "auto", height: "370px" }}>
         {loading ? (
-          // Show 3 placeholders while loading
-          <>
-            <ForumPostItem showPostItemModal={false} setShowPostItemModal={() => {}} />
-            <ForumPostItem showPostItemModal={false} setShowPostItemModal={() => {}} />
-            <ForumPostItem showPostItemModal={false} setShowPostItemModal={() => {}} />
-          </>
+          <div className="text-center mt-5">Loading posts...</div>
         ) : paws.length > 0 ? (
-          // 4. Map through real database items
           paws.map((paw) => (
             <ForumPostItem
-              key={paw.id}
-              paw={paw} // Passing the real data here
-              showPostItemModal={showPostItemModal}
+              key={paw.paws_id}
+              paw={paw}
+              currentUserId={user?.id}
               setShowPostItemModal={(show) => {
-                if (show) {
-                  setActivePaw(paw);
-                } 
+                if (show) setActivePaw(paw);
                 setShowPostItemModal(show);
               }}
             />
           ))
         ) : (
-          <div className="text-center text-muted mt-5">No posts yet. Be the first to post!</div>
+          <div className="text-center text-muted mt-5">No posts yet.</div>
         )}
       </div>
     </div>

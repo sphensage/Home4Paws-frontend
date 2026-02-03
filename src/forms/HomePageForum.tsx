@@ -11,6 +11,19 @@ interface HomePageForumProps {
   showPostItemModal: boolean;
   setShowPostItemModal: (show: boolean) => void;
   setActivePaw: (paw: PawsListing | null) => void;
+  // ADD THESE:
+  paws: PawsListing[];
+  loading: boolean;
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+  selectedCity: string;
+  setSelectedCity: (val: string) => void;
+  // Add these to both HomePageForumProps and ForumContentsProps
+    currentPage: number;
+    lastPage: number;
+    onNext: () => void;
+    onPrev: () => void;
+
 }
 
 const HomePageForum = (props: HomePageForumProps) => {
@@ -22,7 +35,18 @@ const HomePageForum = (props: HomePageForumProps) => {
     showPostItemModal,
     setShowPostItemModal,
     setActivePaw,
+    paws,    // Destructure here
+    loading, // Destructure here
+    searchQuery,
+    setSearchQuery,
+    selectedCity,
+    setSelectedCity,
+    currentPage,
+    lastPage,
+    onNext,
+    onPrev
   } = props;
+  
   const [navbarVariant, setNavbarVariant] = useState<"home" | "inbox">("home");
 
   return (
@@ -70,7 +94,17 @@ const HomePageForum = (props: HomePageForumProps) => {
             boxSizing: "border-box",
           }}
         >
-          <ForumNavbar variant={navbarVariant} />
+          <ForumNavbar 
+            variant={navbarVariant}         
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            currentPage={currentPage}
+            lastPage={lastPage}
+            onNext={onNext}
+            onPrev={onPrev}
+           />
           <ForumContents
             onVariantChange={setNavbarVariant}
             showCreateModal={showCreateModal}
@@ -78,6 +112,9 @@ const HomePageForum = (props: HomePageForumProps) => {
             showPostItemModal={showPostItemModal}
             setShowPostItemModal={setShowPostItemModal}
             setActivePaw={setActivePaw}
+            // PASS THEM DOWN:
+            paws={paws}
+            loading={loading}
           />
         </div>
       </div>

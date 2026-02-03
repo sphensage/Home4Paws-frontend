@@ -101,7 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { success: true };
       } else {
         setError(result.message || "Registration failed");
-        return { success: false, message: result.message, errors: result.errors };
+        return { success: false, message: result.message, errors: (result as any).errors };
       }
     } catch (err: any) {
       const message = err.message || "Registration failed";
