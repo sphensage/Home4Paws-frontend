@@ -1,6 +1,7 @@
 import { useAuth } from "../../AuthContext";
 import { deletePaw } from "../../api";
 import type { PawsListing } from "../../api";
+import { logEmailCopy } from "../../api";
 
 interface PostDisplayProps {
   paw: PawsListing | null;
@@ -12,7 +13,7 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
 
   const isOwner = user && paw && Number(user.id) === Number(paw.user_id);
   const hasLiked = paw?.reactions?.some((r) => Number(r.user_id) === Number(user?.id));
-
+  
   const handleLike = () => {
     // Logic: Prevent owner from liking
     if (isOwner) {
@@ -24,12 +25,18 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
     }
   };
 
-  const handleCopyEmail = () => {
-    if (paw?.user?.email) {
-      navigator.clipboard.writeText(paw.user.email);
-      alert("Email copied!");
+  const handleCopyEmail = async () => {
+  if (paw?.user?.email) {
+    // 1. Copy to clipboard
+    navigator.clipboard.writeText(paw.user.email);
+    alert("Email copied!");
+
+    // 2. Trigger the notification in the backend
+    if (!isOwner) {
+      await logEmailCopy(paw.paws_id);
     }
-  };
+  }
+};
 
   const handleDelete = async () => {
     if (!paw) return;
@@ -47,13 +54,16 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
           post by {paw?.user?.name || "username"}
         </span>
       </h3>
+      <p className="text-muted">Location: {paw?.location}</p>
       
       <p className="fs-4 mt-3">{paw?.description || "No description."}</p>
+
+      <hr/>
 
       {/* Restored your original spacing and classes */}
       <div className="d-flex flex-row justify-content-center justify-content-md-start gap-2">
         <button type="button" className="btn btn-success mt-3" onClick={handleCopyEmail}>
-          Copy Email
+          Get user's email
         </button>
 
         <button 
@@ -65,7 +75,7 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
             opacity: isOwner ? 0.7 : 1 
           }}
         >
-          {hasLiked ? "❤️ Liked" : "🤍 Like"} ({paw?.reactions_count || 0})
+          {hasLiked ? "❤️ Liked" : "🤍 Like?"} ({paw?.reactions_count || 0})
         </button>
 
         {isOwner && (
@@ -73,8 +83,6 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
             Delete
           </button>
         )}
-
-        <h1>LOCATION: {paw?.location} </h1>
       </div>
     </div>
   );

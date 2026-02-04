@@ -55,6 +55,20 @@ export interface PawsListing {
   reactions: PawsReaction[];
 }
 
+export interface InboxNotification {
+  id: number;
+  receiver_id: number;
+  sender_id: number;
+  paws_id: number;
+  type: 'like' | 'email_copy'; // Specific types we defined
+  message: string;
+  is_read: boolean;
+  created_at: string; // Use this for "7 minutes ago" text
+  updated_at: string;
+  sender: Pick<User, 'id' | 'name'>; // We use the 'with(sender:id,name)' in backend
+  paws: { paws_id: number; title: string }; // We use the 'with(paws:paws_id,title)' in backend
+}
+
 // 3. AUTHENTICATION FUNCTIONS
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -156,4 +170,40 @@ export const deletePaw = async (id: number) => {
   }
 };
 
+export const getInboxNotifications = async () => {
+  try {
+    const { data } = await api.get("/inbox");
+    return { success: true, notifications: data as InboxNotification[] };
+  } catch {
+    return { success: false, message: "Failed to fetch inbox" };
+  }
+};
+
+export const getUnreadCount = async () => {
+    try {
+        const { data } = await api.get("/inbox/unread-count");
+        return { success: true, count: data.unread_count as number };
+    } catch {
+        return { success: false, message: "Failed to fetch unread count" };
+    }
+};
+
+export const markNotificationAsRead = async (notificationId: number) => {
+    try {
+        await api.post(`/inbox/${notificationId}/mark-read`);
+        return { success: true };
+    } catch {
+        return { success: false, message: "Failed to mark as read" };
+    }
+};
+
+export const logEmailCopy = async (paws_id: number) => {
+    try {
+        const { data } = await api.post(`/paws/${paws_id}/copy-email`);
+        return { success: true, message: data.message };
+    } catch {
+        // Handle cases where perhaps the user is the owner, which is silently ignored by backend
+        return { success: false, message: "Failed to log email copy action" };
+    }
+};
 export default api;

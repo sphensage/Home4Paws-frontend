@@ -1,9 +1,7 @@
-import React from "react";
 import type { PawsListing } from "../../api";
 
 interface ForumPostItemProps {
   paw?: PawsListing;
-  // Note: we removed onLike here because liking only happens in the modal now
   setShowPostItemModal: (show: boolean) => void;
   currentUserId?: number;
 }
@@ -25,15 +23,14 @@ const ForumPostItem = ({
     return postDate.toLocaleDateString();
   };
 
-  // Logic for display only: Red if liked, Gray if not
   const hasLiked = paw?.reactions?.some(r => r.user_id === currentUserId);
 
   if (!paw) {
     return (
-      <button className="d-flex flex-row justify-content-between align-items-center w-100 flex-shrink-0 placeholder-glow" style={{ border: "none", backgroundColor: "white", borderRadius: "7px", height: "4.5rem" }}>
-        <div className="col-6 d-flex flex-row justify-content-start align-items-center">
-          <div className="d-flex ms-4 placeholder bg-dark" style={{ width: "35px", height: "35px", borderRadius: "50%" }} />
-          <div className="mx-3 col-6 text-start">Loading...</div>
+      <button className="d-flex flex-row align-items-center w-100 flex-shrink-0 placeholder-glow" style={{ border: "none", backgroundColor: "white", borderRadius: "7px", height: "4.5rem" }}>
+        <div className="col-6 d-flex flex-row justify-content-start align-items-center ps-4">
+          <div className="placeholder bg-dark" style={{ width: "35px", height: "35px", borderRadius: "50%" }} />
+          <div className="mx-3 text-start">Loading...</div>
         </div>
       </button>
     );
@@ -41,35 +38,36 @@ const ForumPostItem = ({
 
   return (
     <button
-      className="d-flex flex-row justify-content-between align-items-center w-100 flex-shrink-0"
+      className="d-flex flex-row align-items-center w-100 flex-shrink-0 mb-1"
       style={{ border: "none", backgroundColor: "white", borderRadius: "7px", height: "4.5rem" }}
-      // Clicking ANYWHERE on this button opens the modal
       onClick={() => setShowPostItemModal(true)}
     >
-      <div className="col-6 d-flex flex-row justify-content-start align-items-center">
-        <div className="d-flex ms-4 bg-dark" style={{ width: "35px", height: "35px", borderRadius: "50%" }} />
-        <div className="mx-3 col-6 text-start text-truncate fw-bold">{paw.title}</div>
+      {/* Left Section - EXACT 50% (col-6) */}
+      <div className="col-6 ps-4 d-flex flex-row justify-content-start align-items-center">
+        <div className="bg-dark flex-shrink-0" style={{ width: "35px", height: "35px", borderRadius: "50%" }} />
+        <div className="mx-3 text-start text-truncate fw-bold text-dark">{paw.title}</div>
       </div>
-      <div className="d-flex flex-row col-6 justify-content-around align-items-center text-muted">
-        <div className="mx-3 col-6 text-end">{getRelativeTime(paw.created_at)}</div>
+
+      {/* Right Section - EXACT 50% (col-6) to match Header */}
+      <div className="col-6 d-flex flex-row justify-content-around align-items-center">
+        {/* Mirroring Code 3: col-3 text-center */}
+        <div className="col-3 text-center text-muted">
+          <p className="mb-0" style={{ fontSize: "0.9rem" }}>{getRelativeTime(paw.created_at)}</p>
+        </div>
         
-        {/* Visual-only heart: This no longer has its own onClick */}
-        <div 
-          className="mx-3 col-3 d-flex align-items-center justify-content-center"
-          style={{ gap: '5px' }}
-        >
-          <span style={{ 
-            filter: hasLiked ? 'none' : 'grayscale(100%) opacity(0.5)', 
-            transition: '0.2s' 
-          }}>
-            ❤️
-          </span>
-          <span style={{ color: hasLiked ? '#dc3545' : 'inherit' }}>
-            {paw.reactions_count || 0}
-          </span>
+        {/* Mirroring Code 3: col-3 text-center */}
+        <div className="col-3 text-center text-muted d-flex align-items-center justify-content-center">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <span style={{ 
+              filter: hasLiked ? 'none' : 'grayscale(100%) opacity(0.5)', 
+              transition: '0.2s' 
+            }}>
+              ❤️
+            </span>
+            <span>{paw.reactions_count || 0}</span>
+          </div>
         </div>
       </div>
-      
     </button>
   );
 };

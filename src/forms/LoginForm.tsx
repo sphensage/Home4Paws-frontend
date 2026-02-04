@@ -6,15 +6,16 @@ import RouteButton from "../components/RouteButton";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); // Use AuthContext instead of direct API call
+  const { login } = useAuth();
 
-  // State for inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsError(false);
 
     const form = event.currentTarget;
     if (!form.checkValidity()) {
@@ -25,18 +26,31 @@ const LoginForm = () => {
 
     setLoading(true);
 
-    // Use AuthContext login (handles token storage automatically)
     const result = await login(email, password);
     setLoading(false);
 
     if (!result.success) {
-      alert(result.message || "Login failed");
+      setIsError(true); // Triggers red borders and error message
       return;
     }
 
-    // User is now logged in (token stored, user in context)
-    // No alert needed - just redirect
     navigate("/");
+  };
+
+  // Border style applied when isError is true
+  const errorBorderStyle = isError 
+    ? { borderColor: "#dc3545" } 
+    : {};
+
+  // Handlers to clear error state as soon as typing begins
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    if (isError) setIsError(false);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (isError) setIsError(false);
   };
 
   return (
@@ -54,19 +68,28 @@ const LoginForm = () => {
       </p>
 
       <div className="mb-3">
+        {/* Login error message above the label */}
+        {isError && (
+          <div className="text-danger fw-bold mb-1" style={{ fontSize: "0.9rem" }}>
+            Login is invalid, try again.
+          </div>
+        )}
+        
         <label htmlFor="emailInput" className="form-label">
           Email address
         </label>
         <input
           type="email"
           className="form-control"
+          style={errorBorderStyle}
           id="emailInput"
           placeholder="name@example.com"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleEmailChange}
           required
         />
-        <div className="invalid-feedback">Please enter a valid email.</div>
+        {/* Only show 'required' message if we haven't reached the "Login Failed" state */}
+        {!isError && <div className="invalid-feedback">Please enter a valid email.</div>}
       </div>
 
       <div className="mb-5">
@@ -76,13 +99,15 @@ const LoginForm = () => {
         <input
           type="password"
           className="form-control"
+          style={errorBorderStyle}
           id="passwordInput"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handlePasswordChange}
           required
         />
-        <div className="invalid-feedback">Password is required.</div>
+        {/* Only show 'required' message if we haven't reached the "Login Failed" state */}
+        {!isError && <div className="invalid-feedback">Password is required.</div>}
       </div>
 
       <button
