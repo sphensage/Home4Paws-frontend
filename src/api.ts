@@ -139,12 +139,35 @@ export const getPaw = async (id: number) => {
   }
 };
 
-export const createPaw = async (pawData: Partial<PawsListing>) => {
+export const createPaw = async (pawData: any) => {
   try {
-    const { data } = await api.post("/paws", pawData);
+    // We must use FormData to send physical files to Laravel
+    const formData = new FormData();
+    
+    // Append text fields
+    formData.append("title", pawData.title);
+    formData.append("description", pawData.description);
+    formData.append("location", pawData.location);
+
+    // Append multiple photos to the "photos[]" array expected by your Controller
+    if (pawData.photos && pawData.photos.length > 0) {
+      pawData.photos.forEach((file: File) => {
+        formData.append("photos[]", file);
+      });
+    }
+
+    const { data } = await api.post("/paws", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Overrides default JSON header
+      },
+    });
+
     return { success: true, paw: data.paw as PawsListing };
   } catch (error: any) {
-    return { success: false, message: error.response?.data?.message || "Failed to create post" };
+    return { 
+      success: false, 
+      message: error.response?.data?.message || "Failed to create post" 
+    };
   }
 };
 

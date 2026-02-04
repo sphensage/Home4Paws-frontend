@@ -13,12 +13,37 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
+  // New state for files
+  const [photos, setPhotos] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selectedFiles = Array.from(e.target.files);
+      
+      // Validation: Min 1, Max 3
+      if (selectedFiles.length > 3) {
+        setError("You can only upload a maximum of 3 photos.");
+        e.target.value = ""; // Reset input
+        setPhotos([]);
+        return;
+      }
+      
+      setError(""); // Clear error if count is okay
+      setPhotos(selectedFiles);
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
+
+    // Custom check for at least 1 photo
+    if (photos.length === 0) {
+      setError("Please upload at least 1 photo.");
+      return;
+    }
 
     if (!form.checkValidity()) {
       event.stopPropagation();
@@ -31,14 +56,16 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
     setLoading(true);
 
     try {
+      // Pass the photos array to the refactored api function
       const result = await createPaw({
         title,
         description,
         location,
+        photos, 
       });
 
       if (result.success) {
-        onSuccess?.();
+        if (onSuccess) onSuccess();
         onClose();
       } else {
         setError(result.message || "Failed to create post");
@@ -70,9 +97,7 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
       
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <label htmlFor="postTitle" className="form-label mt-3">
-        Post Title
-      </label>
+      <label htmlFor="postTitle" className="form-label mt-3">Post Title</label>
       <input
         id="postTitle"
         type="text"
@@ -83,9 +108,7 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
         required
       />
 
-      <label htmlFor="postDescription" className="form-label mt-3">
-        Post Description
-      </label>
+      <label htmlFor="postDescription" className="form-label mt-3">Post Description</label>
       <textarea
         id="postDescription"
         className="form-control"
@@ -96,13 +119,10 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
         required
       />
 
-      <label htmlFor="postLocation" className="form-label mt-3">
-        Location
-      </label>
+      <label htmlFor="postLocation" className="form-label mt-3">Location</label>
       <select
         id="postLocation"
         className="form-select"
-        aria-label="Select Location"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
         required
@@ -114,8 +134,7 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
       </select>
 
       <label htmlFor="postImage" className="form-label mt-3">
-        Additional Pictures{" "}
-        <span className="text-muted">(Optional, 3 maximum)</span>
+        Pictures <span className="text-muted">(1 - 3 required)</span>
       </label>
       <input
         type="file"
@@ -123,6 +142,8 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
         id="postImage"
         multiple
         accept="image/*"
+        onChange={handleFileChange}
+        required // Frontend browser validation
       />
 
       <div className="d-flex flex-row gap-2 mt-4 w-100 justify-content-between justify-content-md-start">
@@ -138,8 +159,10 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
           className="btn btn-primary col-6 col-md-2" 
           type="submit"
           disabled={loading}
+
         >
           {loading ? "Posting..." : "Post"}
+
         </button>
       </div>
     </form>
