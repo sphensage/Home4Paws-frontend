@@ -1,5 +1,6 @@
 import React from 'react';
 import type { InboxNotification } from "../../api.ts"; 
+import { useAppStore } from "../../useAppStore.ts"
 
 interface Props {
   notification: InboxNotification; // This now includes the 'type'
@@ -7,6 +8,9 @@ interface Props {
 
 const ForumInboxItem = ({ notification }: Props) => {
   // Logic to format time to "7m ago" or "2h ago"
+
+  const setPostDisplay = useAppStore((state) => state.setPostDisplay)
+
   const getTimeAgo = (dateString: string) => {
     const time = new Date(dateString).getTime();
     const now = new Date().getTime();
@@ -19,7 +23,7 @@ const ForumInboxItem = ({ notification }: Props) => {
   };
 
   return (
-    <div
+    <button
       id="inboxItem"
       className="d-flex flex-row justify-content-between align-items-center w-100 flex-shrink-0"
       style={{
@@ -28,6 +32,7 @@ const ForumInboxItem = ({ notification }: Props) => {
         borderRadius: "7px",
         height: "4.5rem",
       }}
+      onClick={() => setPostDisplay(true)}
     >
       <div className="col-9 d-flex flex-row justify-content-start align-items-center">
         <div
@@ -55,7 +60,7 @@ const ForumInboxItem = ({ notification }: Props) => {
           {getTimeAgo(notification.created_at)}
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 

@@ -2,7 +2,7 @@ import { useAuth } from "../../AuthContext";
 import { deletePaw } from "../../api";
 import type { PawsListing } from "../../api";
 import { logEmailCopy } from "../../api";
-import { useAppStore } from "../../useAppStore";
+import { useAppStore } from "../../useAppStore"; // Import store
 
 interface PostDisplayProps {
   paw: PawsListing | null;
@@ -12,8 +12,9 @@ interface PostDisplayProps {
 const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
   const { user } = useAuth();
 
-  const isImageDisplayed = useAppStore((state) => state.isImageDisplayed);
+  // 1. Get the setter for the URL
   const setImageDisplay = useAppStore((state) => state.setImageDisplay);
+  const setSelectedImageUrl = useAppStore((state) => state.setSelectedImageUrl);
 
   const isOwner = user && paw && Number(user.id) === Number(paw.user_id);
   const hasLiked = paw?.reactions?.some(
@@ -48,6 +49,12 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
     }
   };
 
+  // 2. Create a handler to set the URL and Open the modal
+  const handleImageClick = (url: string) => {
+    setSelectedImageUrl(url); // Set the specific image URL
+    setImageDisplay(true);    // Open the overlay
+  };
+
   return (
     <div className="d-flex flex-column justify-content-start">
       <h3 className="fw-bold">
@@ -62,17 +69,17 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
 
       <p className="text-muted">Images</p>
 
-      {/* Logic to display the actual images from the backend */}
       <div className="d-flex flex-row flex-wrap gap-2">
         {paw?.photos && paw.photos.length > 0 ? (
           paw.photos.map((photo) => (
             <button
-              style={{ border: "none", background: "none" }}
-              onClick={() => setImageDisplay(true)}
+              key={photo.id} // moved key here
+              style={{ border: "none", background: "none", padding: 0 }}
+              // 3. Update the click event here
+              onClick={() => handleImageClick(photo.photo_url)}
             >
               <img
-                key={photo.id}
-                src={photo.photo_url} // This comes from your Laravel "photo_url" accessor
+                src={photo.photo_url}
                 alt={paw.title}
                 className="rounded"
                 style={{
@@ -80,6 +87,7 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
                   height: "150px",
                   objectFit: "cover",
                   border: "1px solid #ddd",
+                  cursor: "zoom-in"
                 }}
               />
             </button>
@@ -90,7 +98,8 @@ const PostDisplay = ({ paw, onLike }: PostDisplayProps) => {
       </div>
 
       <hr />
-
+      
+      {/* Rest of your buttons (Like, Delete, etc.) */}
       <div className="d-flex flex-row justify-content-center justify-content-md-start gap-2">
         <button
           type="button"

@@ -50,6 +50,10 @@ const ForumContents = ({
   const handleActiveChange = (newActive: "home" | "inbox") => {
     setActive(newActive);
     onVariantChange?.(newActive);
+
+    if (newActive === "inbox") {
+    setUnreadCount(0);
+  }
   };
 
   return (
