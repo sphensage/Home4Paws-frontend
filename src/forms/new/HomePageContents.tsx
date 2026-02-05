@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import React from 'react'
-
-const HomePageContents = () => {
-  return (
-    <div>HomePageContents</div>
-  )
-}
-
-export default HomePageContents
-=======
 import { useState } from "react";
 
 import HomePageCenter from "./homepage contents/HomePageCenter";
@@ -33,4 +22,3 @@ const HomePageContents = () => {
   );
 };
 export default HomePageContents;
->>>>>>> origin/ex
