@@ -125,9 +125,18 @@
         <RouteButton
           linkto="signup"
           classes="btn btn-light w-100"
-          textcolor="#8b2e58"
+          textcolor="#ffffff"
+          bgcolor="#774c60"
         >
           Sign up
+        </RouteButton>
+        <RouteButton
+          linkto="/"
+          classes="btn btn-light w-100 mt-3"
+          textcolor="#000000"
+          bgcolor="#d5d5d5"
+        >
+          Back to home
         </RouteButton>
       </form>
     );
