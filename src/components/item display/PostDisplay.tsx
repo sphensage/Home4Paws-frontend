@@ -32,6 +32,7 @@ const PostDisplay = ({ paw, onLike, onDelete }: PostDisplayProps) => {
     if (!isAuthenticated || isOwner) return;
     if (paw && typeof onLike === "function") {
       onLike(paw.paws_id);
+      setSuccessMessage("Liked successfully ");
     }
   };
 
@@ -52,7 +53,7 @@ const PostDisplay = ({ paw, onLike, onDelete }: PostDisplayProps) => {
       const res = await deletePaw(paw.paws_id);
       if (res.success) {
         onDelete(paw.paws_id);
-        setSuccessMessage("Post deleted successfully 🗑️");
+        setSuccessMessage("Post deleted successfully");
       }
     }
   };

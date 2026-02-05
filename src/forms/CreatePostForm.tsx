@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { createPaw } from "../api";
+import { useAppStore } from "../useAppStore";
 
 interface CreatePostFormProps {
   onClose: () => void;
@@ -9,6 +10,7 @@ interface CreatePostFormProps {
 
 const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
   const { user } = useAuth();
+  const setSuccessMessage = useAppStore((state) => state.setSuccessMessage); 
   
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -65,6 +67,7 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
       });
 
       if (result.success) {
+        setSuccessMessage("Post created successfully!");
         if (onSuccess) onSuccess();
         onClose();
       } else {

@@ -68,12 +68,12 @@ const ForumNavbar = ({
         </div>
         <button className="btn btn-secondary" onClick={onPrev} 
           disabled={currentPage <= 1} 
-          >previous
+          >{"<"}
         </button>
         <button className="btn btn-secondary" 
         onClick={onNext} 
         disabled={currentPage >= lastPage}>
-            next
+            {">"}
         </button>
       </div>
     </nav>

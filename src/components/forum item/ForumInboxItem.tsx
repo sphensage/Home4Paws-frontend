@@ -49,7 +49,6 @@ return (
         borderRadius: "7px",
         height: "4.5rem",
       }}
-      onClick={() => setPostDisplay(true)}
     >
       {/* 1. Content Area (Alignment Fixed) */}
       <div className="flex-grow-1 d-flex align-items-center overflow-hidden">
