@@ -9,14 +9,18 @@ import LoginPage from "./webpages/LoginPage.tsx";
 import HomePage from "./webpages/HomePage.tsx";
 import SignUpPage from "./webpages/SignUpPage.tsx";
 import ErrorPage from "./webpages/ErrorPage.tsx";
-import AboutPage from "./webpages/AboutPage.tsx";
-import ContactPage from "./webpages/ContactPage.tsx";
 import { SuccessToast } from "./SuccessToast.tsx";
+
+// new
+
+import NewHomePage from "./new webpages/HomePage.tsx";
+import NewAboutPage from "./new webpages/AboutPage.tsx";
+import NewContactPage from "./new webpages/ContactPage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <NewHomePage />,
     errorElement: <ErrorPage />,
   },
   {
@@ -29,18 +33,18 @@ const router = createBrowserRouter([
   },
   {
     path: "/about",
-    element: <AboutPage />,
+    element: <NewAboutPage />,
   },
   {
     path: "/contact",
-    element: <ContactPage />,
+    element: <NewContactPage />,
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <SuccessToast /> 
+      <SuccessToast />
       <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,

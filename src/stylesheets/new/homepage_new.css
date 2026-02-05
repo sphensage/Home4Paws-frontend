@@ -1,0 +1,199 @@
+body {
+  background-color: #301824;
+}
+
+.custom-nav {
+  background-color: #3b1b2c !important;
+  color: white;
+}
+
+.txt-secondary {
+  color: #ce7853;
+}
+
+.btn-secondary {
+  background-color: #5c946d;
+}
+
+.txt-nav-unselected {
+  color: #af8598;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.txt-nav-unselected:hover {
+  color: white;
+}
+
+.txt-nav-selected {
+  color: white; /* Or your txt-secondary color: #ce7853 */
+  text-decoration: none;
+  /* Optional: add a small underline to show it is the active page */
+}
+
+.custom-popover {
+  --bs-popover-bg: #572841; /* Main background */
+  --bs-popover-header-bg: #572841; /* Header background */
+  --bs-popover-header-color: white; /* Header text */
+  --bs-popover-body-color: white; /* Body text */
+  --bs-popover-border-color: #301824;
+}
+
+.custom-popover::placeholder {
+  color: #af8598 !important; /* Your custom color */
+  font-style: italic; /* Example: make it italic */
+  font-size: 13px; /* Example: make it smaller */
+  opacity: 0.8;
+}
+
+/* 1. When it's invalid, show RED */
+.was-validated .form-control:invalid {
+  border: 2px solid #dc3545 !important;
+}
+
+/* 2. When it becomes valid (while typing), reset to NEUTRAL */
+/* This removes the red border as soon as they type enough to satisfy 'required' */
+.was-validated .form-control:valid {
+  border: 1px solid transparent !important; /* Or use your default border color */
+  background-color: #572841 !important;
+}
+
+/* 3. Optional: Add a slight glow when they are fixing the error */
+.form-control:focus {
+  outline: none !important;
+  box-shadow: 0 0 5px rgba(175, 133, 152, 0.5) !important;
+}
+
+/* Style the placeholder specifically if needed */
+.custom-popover .form-control::placeholder {
+  color: #af8598;
+}
+
+.custom-popover .form-control {
+  background-color: #572841 !important;
+  color: white !important; /* This fixes the black typing color */
+  border: none !important;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Optional: change the color when the user is actually typing (focus) */
+.custom-popover .form-control:focus {
+  background-color: #3b1b2c !important;
+  color: white !important;
+  box-shadow: none;
+}
+
+.search-bg {
+  background-color: #572841;
+  color: #ffffff; /* Actual text color */
+  border: none; /* Removes the default border */
+  outline: none; /* Removes the blue outline when clicking */
+  padding: 8px 20px; /* Taller (vertical) and wider (horizontal) */
+  border-radius: 8px; /* Optional: smooth corners */
+  width: 100%;
+}
+
+.search-bg::placeholder {
+  color: #af8598; /* Only styles the hint text */
+}
+
+.btn-login {
+  background-color: #ce7853;
+  font-weight: bold;
+  color: white;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn-login:hover {
+  background-color: #92634f;
+}
+
+.btn-signup {
+  background-color: #694b58;
+  color: white;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn-signup:hover {
+  background-color: #58434c;
+}
+
+.btn-invisible {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.hm-content {
+  background-color: #3b1b2c;
+  height: 75vh;
+  min-height: 75vh;
+  border-radius: 5px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.hm-stats {
+  background-color: #3b1b2c;
+  height: 30vh;
+  min-height: 30vh;
+  border-radius: 5px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.hm-sidebar {
+  color: white;
+}
+
+.txt-main-label {
+  color: #af8598;
+}
+
+.btn-sidebar {
+  background-color: rgba(0, 0, 0, 0);
+  box-sizing: border-box;
+  height: 50px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-sidebar.active {
+  background-color: #50273c !important;
+  border-right: 5px solid #8b2e58;
+  font-weight: bold;
+}
+
+.btn-sidebar.home-active.active {
+  border-right: 5px solid #01ad65; /* Blue for Home */
+}
+
+.btn-sidebar.featured-active.active {
+  border-right: 5px solid #ce7853; /* Yellow/Gold for Featured */
+}
+
+.btn-sidebar.trending-active.active {
+  border-right: 5px solid #7a53ce; /* Green for Trending */
+}
+
+.btn-sidebar.inbox-active.active {
+  border-right: 5px solid #dddb75; /* Green for Trending */
+}
+
+.btn-sidebar:hover {
+  background-color: #50273c;
+}
+
+.custom-select {
+  /* Remove blue glow */
+  box-shadow: none !important;
+  outline: none !important;
+  border: none !important;
+}
+
+.txt-muted {
+  color: #694b58;
+}
