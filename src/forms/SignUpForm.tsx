@@ -4,29 +4,20 @@ import "/src/stylesheets/signupform.css";
 import { useAuth } from "../AuthContext";
 import { useAppStore } from "../useAppStore";
 
-function formatPhoneNumber(value: string): string {
-  const digits = value.replace(/\D/g, "");
-
-  if (digits.length <= 3) return digits;
-  if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
-
-  return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
-}
-
 const SignUpForm = () => {
   const navigate = useNavigate();
-  const { signup } = useAuth(); // Use AuthContext instead of direct API call
+  const { signup } = useAuth();
 
-  const [phone, setPhone] = useState<string>("");
   const [validated] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [hideTooltips, setHideTooltips] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false); // Loading state
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
+
   const handleNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setter: (val: string) => void
@@ -62,11 +53,9 @@ const SignUpForm = () => {
     form.classList.add("was-validated");
     setHideTooltips(false);
 
-    // Prepare user data
     const userData = {
       name: `${firstName} ${lastName}`,
       email: (document.getElementById("emailInput") as HTMLInputElement).value,
-      phone: phone,
       password: password,
       birthdate: `${(document.getElementById("year") as HTMLInputElement).value}-${String(
         (document.getElementById("month") as HTMLInputElement).value
@@ -75,18 +64,14 @@ const SignUpForm = () => {
       ).padStart(2, "0")}`,
     };
 
-    // Use AuthContext signup (handles token storage automatically)
     setIsSubmitting(true);
     try {
       const result = await signup(userData);
 
       if (result.success) {
-        // User is now logged in (token stored, user in context)
-        // Navigate to home page instead of login
-          setSuccessMessage("Account Created Successfully! Welcome to Home4Paws.");
-          navigate("/");
+        setSuccessMessage("Account Created Successfully! Welcome to Home4Paws.");
+        navigate("/");
       } else {
-        // Show error message
         alert("Sign up failed: " + (result.message || "Unknown error"));
       }
     } catch (error) {
@@ -219,26 +204,7 @@ const SignUpForm = () => {
           Please enter a valid email address.
         </div>
       </div>
-      <label htmlFor="phoneInput" className="form-label w-100 text-start mb-2">
-        Phone Number
-      </label>
-      <div className="w-100 mb-3 position-relative">
-        <input
-          id="phoneInput"
-          type="tel"
-          className="form-control"
-          value={phone}
-          placeholder="012 345 6789"
-          onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
-          minLength={12}
-          maxLength={12}
-          required
-        />
-        <div className="invalid-tooltip">
-          Please enter a valid phone number.
-        </div>
-      </div>
-      <label htmlFor="phoneInput" className="form-label w-100 text-start mb-2">
+      <label htmlFor="passwordInput" className="form-label w-100 text-start mb-2">
         Password
       </label>
       <div className="d-flex flex-row gap-2 mb-3 position-relative">

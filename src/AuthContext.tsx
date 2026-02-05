@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { loginUser, logoutUser, getProfile, signUpUser } from "./api";
 import type { User } from "./api";
+
 // ----------------------------
 // Auth Context Type
 // ----------------------------
@@ -14,15 +15,16 @@ interface AuthContextType {
     name: string;
     email: string;
     password: string;
-    phone?: string;
-    birthdate?: string;
+    birthdate: string;
   }) => Promise<{ success: boolean; message?: string; errors?: any }>;
   checkAuth: () => Promise<void>;
 }
+
 // ----------------------------
 // Create Context
 // ----------------------------
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 // ----------------------------
 // Auth Provider Component
 // ----------------------------
@@ -30,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   // ----------------------------
   // Check if user is already authenticated (on app mount)
   // ----------------------------
@@ -51,12 +54,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
   }, []);
+
   // ----------------------------
   // Check auth status when app mounts
   // ----------------------------
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
   // ----------------------------
   // Login function
   // ----------------------------
@@ -81,6 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
   };
+
   // ----------------------------
   // Signup function
   // ----------------------------
@@ -88,8 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     name: string;
     email: string;
     password: string;
-    phone?: string;
-    birthdate?: string;
+    birthdate: string;
   }) => {
     setError(null);
     setLoading(true);
@@ -111,6 +116,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
   };
+
   // ----------------------------
   // Logout function
   // ----------------------------
@@ -127,6 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
   };
+
   return (
     <AuthContext.Provider
       value={{
@@ -143,6 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </AuthContext.Provider>
   );
 };
+
 // ----------------------------
 // Hook to use auth context
 // ----------------------------

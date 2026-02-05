@@ -46,7 +46,9 @@ export interface PawsListing {
   user_id: number;
   title: string;
   description?: string;
+  status: "available" | "adopted";
   location?: string;
+  fb_link?: string;
   created_at: string;
   updated_at: string;
   reactions_count: number;
@@ -107,13 +109,14 @@ export const getProfile = async (): Promise<{ success: boolean; user?: User }> =
 };
 
 // 4. PAWS / LISTING FUNCTIONS
-export const getPaws = async (page = 1, search = "", location = "All") => {
+export const getPaws = async (page = 1, search = "", location = "All", sort= "newest") => {
   try {
     const { data } = await api.get("/paws", {
       params: { 
         page, 
         search, 
-        location: location !== "All" ? location : undefined 
+        location: location !== "All" ? location : undefined, 
+        sort: sort
       },
     });
     return {
@@ -148,6 +151,7 @@ export const createPaw = async (pawData: any) => {
     formData.append("title", pawData.title);
     formData.append("description", pawData.description);
     formData.append("location", pawData.location);
+    formData.append("fb_link", pawData.fb_link);
 
     // Append multiple photos to the "photos[]" array expected by your Controller
     if (pawData.photos && pawData.photos.length > 0) {
@@ -220,13 +224,36 @@ export const markNotificationAsRead = async (notificationId: number) => {
     }
 };
 
-export const logEmailCopy = async (paws_id: number) => {
+export const logFacebookVisit = async (paws_id: number) => {
     try {
-        const { data } = await api.post(`/paws/${paws_id}/copy-email`);
+        const { data } = await api.post(`/paws/${paws_id}/visitFacebookAcc`);
         return { success: true, message: data.message };
     } catch {
-        // Handle cases where perhaps the user is the owner, which is silently ignored by backend
-        return { success: false, message: "Failed to log email copy action" };
+        return { success: false, message: "Failed to log Facebook visit" };
     }
 };
+
+
+export const markAsAdopted = async (paws_id: number) => {
+    try {
+        const { data } = await api.patch(`/paws/${paws_id}/adopt`);
+        return { success: true, message: data.message };
+    } catch (error: any) {
+        return { 
+            success: false, 
+            message: error.response?.data?.message || "Failed to mark as adopted" 
+        };
+    }
+};
+
+export const getGlobalPawsStats = async () => {
+    try {
+        const { data } = await api.get('/paws/global-stats');
+        // We use data.data because Laravel wraps the stats inside a 'data' object
+        return { success: true, stats: data.data }; 
+    } catch {
+        return { success: false, message: "Failed to fetch global stats" };
+    }
+};
+
 export default api;

@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useAuth } from "../../AuthContext";
 import { deletePaw } from "../../api";
 import type { PawsListing } from "../../api";
-import { logEmailCopy } from "../../api";
+import { logFacebookVisit } from "../../api";
 import { useAppStore } from "../../useAppStore";
-
+import { markAsAdopted } from "../../api";
+import "/src/stylesheets/postdisplay.css";
 interface PostDisplayProps {
   paw: PawsListing | null;
   onLike: (id: number) => void;
@@ -15,10 +16,8 @@ const PostDisplay = ({ paw, onLike, onDelete }: PostDisplayProps) => {
   const { user } = useAuth();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  // Auth Check
   const isAuthenticated = localStorage.getItem("auth_token") !== null;
 
-  // Store Actions
   const setImageDisplay = useAppStore((state) => state.setImageDisplay);
   const setSelectedImageUrl = useAppStore((state) => state.setSelectedImageUrl);
   const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
@@ -36,16 +35,24 @@ const PostDisplay = ({ paw, onLike, onDelete }: PostDisplayProps) => {
     }
   };
 
-  const handleCopyEmail = async () => {
-    if (!isAuthenticated) return; 
-    if (paw?.user?.email) {
-      navigator.clipboard.writeText(paw.user.email);
-      setSuccessMessage("Email copied to clipboard! 📋");
-      if (!isOwner) {
-        await logEmailCopy(paw.paws_id);
+  const handleMarkAdopted = async () => {
+    if (paw?.paws_id && window.confirm("Is this pet adopted?")) {
+      const res = await markAsAdopted(paw.paws_id);
+      if (res.success) {
+        setSuccessMessage("Status updated! 🎉");
       }
     }
-  };
+  }
+
+  const handleFacebookContact = async () => {
+  if (!paw?.fb_link) return;
+
+  // 1. Open the link immediately for the best user experience
+  window.open(paw.fb_link, "_blank", "noopener,noreferrer");
+
+  // 2. Log it using our new API function
+    await logFacebookVisit(paw.paws_id);
+};
 
   const handleDelete = async () => {
     if (!paw) return;
@@ -115,56 +122,25 @@ const PostDisplay = ({ paw, onLike, onDelete }: PostDisplayProps) => {
           <div className="mb-4">
             <h6 className="text-muted mb-3">Photos</h6>
             
-            {/* Carousel for multiple images, single image display for one */}
             {hasMultipleImages ? (
               <div className="position-relative">
-                <div 
-                  className="position-relative rounded overflow-hidden"
-                  style={{ 
-                    backgroundColor: '#f8f9fa',
-                    aspectRatio: '16/9'
-                  }}
-                >
+                <div className="post-display__carousel">
                   {/* Image Counter */}
-                  <div 
-                    className="position-absolute top-0 end-0 m-3 px-3 py-1 rounded-pill"
-                    style={{
-                      background: 'rgba(0, 0, 0, 0.6)',
-                      color: 'white',
-                      fontSize: '14px',
-                      zIndex: 10
-                    }}
-                  >
+                  <div className="post-display__image-counter">
                     {currentImageIndex + 1} / {paw.photos.length}
                   </div>
 
                   <img
                     src={paw.photos[currentImageIndex].photo_url}
                     alt={`${paw.title} - Image ${currentImageIndex + 1}`}
-                    className="w-100 h-100"
-                    style={{
-                      objectFit: "contain",
-                      cursor: "zoom-in",
-                    }}
+                    className="post-display__carousel-image"
                     onClick={() => handleImageClick(paw.photos[currentImageIndex].photo_url)}
                   />
                   
                   {/* Previous Arrow */}
                   <button
-                    className="position-absolute top-50 start-0 translate-middle-y ms-3 btn btn-light rounded-circle shadow-sm"
+                    className="post-display__nav-button post-display__nav-button--prev"
                     onClick={handlePrevImage}
-                    style={{ 
-                      width: '45px', 
-                      height: '45px',
-                      zIndex: 10,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      border: 'none',
-                      opacity: 0.9
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                    onMouseLeave={(e) => e.currentTarget.style.opacity = '0.9'}
                   >
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                       <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
@@ -173,20 +149,8 @@ const PostDisplay = ({ paw, onLike, onDelete }: PostDisplayProps) => {
                   
                   {/* Next Arrow */}
                   <button
-                    className="position-absolute top-50 end-0 translate-middle-y me-3 btn btn-light rounded-circle shadow-sm"
+                    className="post-display__nav-button post-display__nav-button--next"
                     onClick={handleNextImage}
-                    style={{ 
-                      width: '45px', 
-                      height: '45px',
-                      zIndex: 10,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      border: 'none',
-                      opacity: 0.9
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                    onMouseLeave={(e) => e.currentTarget.style.opacity = '0.9'}
                   >
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                       <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
@@ -199,60 +163,32 @@ const PostDisplay = ({ paw, onLike, onDelete }: PostDisplayProps) => {
                   {paw.photos.map((_, index) => (
                     <button
                       key={index}
-                      className="border-0 p-0"
-                      style={{ 
-                        width: index === currentImageIndex ? '24px' : '8px', 
-                        height: '8px',
-                        borderRadius: '4px',
-                        backgroundColor: index === currentImageIndex ? '#0d6efd' : '#dee2e6',
-                        transition: 'all 0.3s ease',
-                        cursor: 'pointer'
-                      }}
+                      className={`post-display__indicator ${index === currentImageIndex ? 'post-display__indicator--active' : ''}`}
                       onClick={() => setCurrentImageIndex(index)}
                     />
                   ))}
                 </div>
                 
                 {/* Thumbnails */}
-                <div className="d-flex gap-2 mt-3 overflow-auto pb-2">
+                <div className="post-display__thumbnails">
                   {paw.photos.map((photo, index) => (
                     <button
                       key={photo.id}
-                      className="border-0 p-0 rounded position-relative"
-                      style={{
-                        minWidth: '80px',
-                        outline: index === currentImageIndex ? '2px solid #0d6efd' : 'none',
-                        outlineOffset: '2px',
-                        opacity: index === currentImageIndex ? 1 : 0.7,
-                        transition: 'all 0.3s ease'
-                      }}
+                      className={`post-display__thumbnail ${index === currentImageIndex ? 'post-display__thumbnail--active' : ''}`}
                       onClick={() => setCurrentImageIndex(index)}
-                      onMouseEnter={(e) => !e.currentTarget.style.outline && (e.currentTarget.style.opacity = '1')}
-                      onMouseLeave={(e) => !e.currentTarget.style.outline && (e.currentTarget.style.opacity = '0.7')}
                     >
                       <img
                         src={photo.photo_url}
                         alt={`Thumbnail ${index + 1}`}
-                        className="rounded"
-                        style={{
-                          width: '80px',
-                          height: '80px',
-                          objectFit: 'cover',
-                        }}
+                        className="post-display__thumbnail-image"
                       />
                     </button>
                   ))}
                 </div>
               </div>
             ) : (
-              // Single image display
               <div 
-                className="rounded overflow-hidden"
-                style={{ 
-                  backgroundColor: '#f8f9fa',
-                  aspectRatio: '16/9',
-                  cursor: 'zoom-in'
-                }}
+                className="post-display__single-image"
                 onClick={() => handleImageClick(paw.photos[0].photo_url)}
               >
                 <img
@@ -277,39 +213,50 @@ const PostDisplay = ({ paw, onLike, onDelete }: PostDisplayProps) => {
 
         {/* Action Buttons */}
         <div className="d-flex flex-wrap gap-2">
-          {/* Email Button */}
+           {/* Facebook Contact Button (Replaces Email) */}
           <button
             type="button"
-            className={`btn ${isAuthenticated ? 'btn-success' : 'btn-outline-secondary'} d-flex align-items-center gap-2`}
-            onClick={handleCopyEmail}
-            disabled={!isAuthenticated}
-            style={{
-              cursor: isAuthenticated ? "pointer" : "not-allowed",
-            }}
+            className={`btn ${isAuthenticated && paw?.fb_link ? 'btn-primary' : 'btn-outline-secondary'} d-flex align-items-center gap-2 ${(!isAuthenticated || !paw?.fb_link || paw?.status === 'adopted') ? 'post-display__disabled' : ''}`}
+            onClick={handleFacebookContact}
+            disabled={!isAuthenticated || !paw?.fb_link || paw?.status === 'adopted'}
+            style={isAuthenticated && paw?.fb_link && paw?.status !== 'adopted' ? { backgroundColor: '#1877F2', borderColor: '#1877F2' } : {}}
           >
-            <i className="bi bi-envelope"></i>
-            {isAuthenticated ? "Copy Contact Email" : "Login to see email"}
+            <i className="bi bi-facebook"></i>
+            {!isAuthenticated 
+              ? "Login to Contact" 
+              : paw?.status === 'adopted' 
+                ? "Pet Adopted" 
+                : "Contact on Facebook"}
           </button>
 
-          {/* Like Button */}
-          <button
-            type="button"
-            className={`btn d-flex align-items-center gap-2 ${
-              hasLiked ? "btn-danger" : "btn-outline-danger"
-            }`}
-            onClick={handleLike}
-            disabled={(!isAuthenticated || isOwner) ? true : false}
-            style={{
-              cursor: (isAuthenticated && !isOwner) ? "pointer" : "not-allowed",
-              opacity: (isAuthenticated && !isOwner) ? 1 : 0.6,
-            }}
-          >
-            <i className={`bi ${hasLiked ? '❤️' : '🩶'}`}></i>
-            <span>{hasLiked ? "❤️ Liked" : "❤️ Like"}</span>
-            <span className="badge bg-white text-danger">
-              {paw?.reactions_count || 0}
-            </span>
-          </button>
+          
+          {/* NEW: Mark Adopted Button (Visible only to owner if pet is still available) */}
+          {isOwner && paw?.status !== 'adopted' && (
+            <button
+              type="button"
+              className="btn btn-success d-flex align-items-center gap-2"
+              onClick={handleMarkAdopted}
+            >
+              <i className="bi bi-house-heart"></i>
+              Mark as Adopted
+            </button>
+          )}
+
+                  {/* Like Button */}
+                  <button
+                    type="button"
+                    className={`btn d-flex align-items-center gap-2 ${
+                      hasLiked ? "btn-danger" : "btn-outline-danger"
+                    } ${(!isAuthenticated || isOwner) ? 'post-display__disabled-like' : ''}`}
+                    onClick={handleLike}
+                    disabled={(!isAuthenticated || isOwner) ? true : false}
+                  >
+                    <i className={`bi ${hasLiked ? '❤️' : '🩶'}`}></i>
+                    <span>{hasLiked ? "❤️ Liked" : "❤️ Like"}</span>
+                    <span className="badge bg-white text-danger">
+                      {paw?.reactions_count || 0}
+                    </span>
+                  </button>
 
           {/* Delete Button (Owner Only) */}
           {isOwner && (

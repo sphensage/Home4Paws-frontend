@@ -13,6 +13,10 @@ import AboutPage from "./webpages/AboutPage.tsx";
 import ContactPage from "./webpages/ContactPage.tsx";
 import { SuccessToast } from "./SuccessToast.tsx";
 
+// new
+
+import NewHomePage from "./dummy webpage/HomePage.tsx"
+
 const router = createBrowserRouter([
   {
     path: "/",

@@ -15,8 +15,9 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  // New state for files
   const [photos, setPhotos] = useState<File[]>([]);
+  const [fbLink, setFbLink] = useState("");
+  const [fbLinkError, setFbLinkError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,16 +25,47 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
       
-      // Validation: Min 1, Max 3
       if (selectedFiles.length > 3) {
         setError("You can only upload a maximum of 3 photos.");
-        e.target.value = ""; // Reset input
+        e.target.value = "";
         setPhotos([]);
         return;
       }
       
-      setError(""); // Clear error if count is okay
+      setError("");
       setPhotos(selectedFiles);
+    }
+  };
+
+  const validateFacebookUrl = (url: string): boolean => {
+    if (!url) return false; // Required field, empty is invalid
+    
+    try {
+      const urlObj = new URL(url);
+      const validDomains = [
+        'facebook.com',
+        'www.facebook.com',
+        'fb.com',
+        'www.fb.com',
+        'm.facebook.com'
+      ];
+      
+      return validDomains.some(domain => urlObj.hostname === domain);
+    } catch {
+      return false;
+    }
+  };
+
+  const handleFbLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFbLink(value);
+    
+    if (value === "") {
+      setFbLinkError("Facebook profile link is required");
+    } else if (!validateFacebookUrl(value)) {
+      setFbLinkError("Please enter a valid Facebook URL (e.g., https://facebook.com/yourprofile)");
+    } else {
+      setFbLinkError("");
     }
   };
 
@@ -41,9 +73,19 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
     event.preventDefault();
     const form = event.currentTarget;
 
-    // Custom check for at least 1 photo
     if (photos.length === 0) {
       setError("Please upload at least 1 photo.");
+      return;
+    }
+
+    // Validate Facebook URL before submit
+    if (!fbLink) {
+      setFbLinkError("Facebook profile link is required");
+      return;
+    }
+
+    if (!validateFacebookUrl(fbLink)) {
+      setFbLinkError("Please enter a valid Facebook URL");
       return;
     }
 
@@ -55,15 +97,16 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
 
     form.classList.add("was-validated");
     setError("");
+    setFbLinkError("");
     setLoading(true);
 
     try {
-      // Pass the photos array to the refactored api function
       const result = await createPaw({
         title,
         description,
         location,
-        photos, 
+        photos,
+        fb_link: fbLink,
       });
 
       if (result.success) {
@@ -146,8 +189,30 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
         multiple
         accept="image/*"
         onChange={handleFileChange}
-        required // Frontend browser validation
+        required
       />
+
+      <label htmlFor="postFbLink" className="form-label mt-3">
+        Facebook Profile Link <span className="text-danger">*</span>
+      </label>
+      <input
+        id="postFbLink"
+        type="url"
+        className={`form-control ${fbLinkError ? 'is-invalid' : fbLink && !fbLinkError ? 'is-valid' : ''}`}
+        placeholder="https://facebook.com/yourprofile"
+        value={fbLink}
+        onChange={handleFbLinkChange}
+        required
+      />
+      {fbLinkError && (
+        <div className="invalid-feedback d-block">
+          {fbLinkError}
+        </div>
+      )}
+      <small className="text-muted mt-1">
+        <i className="bi bi-info-circle me-1"></i>
+        This helps interested adopters contact you directly on Facebook
+      </small>
 
       <div className="d-flex flex-row gap-2 mt-4 w-100 justify-content-between justify-content-md-start">
         <button
@@ -161,11 +226,9 @@ const CreatePostForm = ({ onClose, onSuccess }: CreatePostFormProps) => {
         <button 
           className="btn btn-primary col-6 col-md-2" 
           type="submit"
-          disabled={loading}
-
+          disabled={loading || !!fbLinkError}
         >
           {loading ? "Posting..." : "Post"}
-
         </button>
       </div>
     </form>
