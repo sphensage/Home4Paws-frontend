@@ -3,6 +3,28 @@
   color: #8b2e58;
 }
 
+/* Animation for the Success Toast */
+@keyframes slideDownFade {
+  0% {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  15% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.toast-animate {
+  animation: slideDownFade 3s ease-in-out forwards;
+}
+
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

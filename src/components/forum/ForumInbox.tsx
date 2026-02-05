@@ -1,6 +1,7 @@
 // src/pages/ForumInbox.tsx
 import React, { useEffect, useState } from "react";
 import ForumInboxItem from "../forum item/ForumInboxItem.tsx";
+import ForumInboxHeader from "../../forms/ForumInboxHeader.tsx";
 import { getInboxNotifications } from "../../api.ts"; 
 import type { InboxNotification } from "../../api";
 
@@ -31,9 +32,7 @@ const ForumInbox = () => {
   return (
     <div style={{ height: "100%" }}>
       {/* Header design from your image */}
-      <div style={{ background: '#800040', color: 'white', padding: '1rem', borderRadius: '7px 7px 0 0' }}>
-        Inbox history
-      </div>
+      <ForumInboxHeader/>
 
       <div
         id="inboxesContainer"
@@ -55,7 +54,7 @@ const ForumInbox = () => {
             />
           ))
         ) : (
-          <p className="text-center mt-4 text-white">Your inbox is empty.</p>
+          <p className="text-center mt-4 text-muted">Your inbox is empty.</p>
         )}
       </div>
     </div>

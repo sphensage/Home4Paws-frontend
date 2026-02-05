@@ -12,6 +12,8 @@ import "/src/stylesheets/homepage.css";
 const HomePage = () => {
   const setImageDisplay = useAppStore((state) => state.setImageDisplay);
   const isImageDisplayed = useAppStore((state) => state.isImageDisplayed);
+  const setPostDisplay = useAppStore((state) => state.setPostDisplay);
+  const isPostDisplayed = useAppStore((state) => state.isPostDisplayed)
 
   const { user } = useAuth();
   const [paws, setPaws] = useState<PawsListing[]>([]);
@@ -84,14 +86,26 @@ const HomePage = () => {
     }
   };
 
+  const handleDelete = (paws_id: number) => {
+  // 1. Remove from the local list instantly
+  setPaws((prev) => prev.filter((p) => p.paws_id !== paws_id));
+
+  // 2. Close the modal and clean up active state
+  setShowPostItemModal(false);
+  setActivePaw(null);
+};
+
   return (
     <>
+      <div className="w-100" style={{ position: "absolute", zIndex: 5000 }}>
+        <HomePageHeader whatSelected="home" />
+      </div>
+
       {/* BACKGROUND & FORUM LAYER */}
       <div
         className="h-100 w-100 position-absolute bg-image-homepage"
         style={{ backgroundColor: "black", zIndex: 1 }}
       >
-        <HomePageHeader whatSelected="home" />
 
         <HomePageForum
           searchQuery={searchQuery}
@@ -208,7 +222,37 @@ const HomePage = () => {
               color: "#8b2e58",
             }}
           >
-            <PostDisplay paw={activePaw} onLike={handleLike} />
+            <PostDisplay paw={activePaw} onLike={handleLike} onDelete={handleDelete} />
+          </div>
+        </div>
+      )}
+
+      {isPostDisplayed && (
+        <div
+          onClick={() => setPostDisplay(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "white",
+              borderRadius: 8,
+              padding: 20,
+              width: "min(720px, 95%)",
+              maxHeight: "85vh",
+              overflow: "auto",
+              color: "#8b2e58",
+            }}
+          >
+            <PostDisplay paw={activePaw} onLike={handleLike} onDelete={handleDelete} />
           </div>
         </div>
       )}

@@ -11,6 +11,7 @@ import SignUpPage from "./webpages/SignUpPage.tsx";
 import ErrorPage from "./webpages/ErrorPage.tsx";
 import AboutPage from "./webpages/AboutPage.tsx";
 import ContactPage from "./webpages/ContactPage.tsx";
+import { SuccessToast } from "./SuccessToast.tsx";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
+      <SuccessToast /> 
       <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,

@@ -8,7 +8,6 @@ interface Props {
 
 const ForumInboxItem = ({ notification }: Props) => {
   // Logic to format time to "7m ago" or "2h ago"
-
   const setPostDisplay = useAppStore((state) => state.setPostDisplay)
 
   const getTimeAgo = (dateString: string) => {
@@ -21,11 +20,29 @@ const ForumInboxItem = ({ notification }: Props) => {
     if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
     return new Date(dateString).toLocaleDateString();
   };
+   const formatNotification = (message: string) => {
+    const words = message.split(" ");
+
+      const fullName = words.slice(0, 2).join(" ");
+    const action = words.slice(2).join(" ");
+
+    
+return (
+      <div
+        id="inboxDescription"
+        className="text-black text-start text-truncate"
+        style={{ marginLeft: "1rem" }}
+      >
+        <span className="fw-bold">{fullName}</span>
+        <span className="fw-normal"> {action}</span>
+      </div>
+    );
+  };
 
   return (
     <button
       id="inboxItem"
-      className="d-flex flex-row justify-content-between align-items-center w-100 flex-shrink-0"
+      className="d-flex flex-row align-items-center w-100 flex-shrink-0 px-3"
       style={{
         border: "none",
         backgroundColor: "white",
@@ -34,29 +51,14 @@ const ForumInboxItem = ({ notification }: Props) => {
       }}
       onClick={() => setPostDisplay(true)}
     >
-      <div className="col-9 d-flex flex-row justify-content-start align-items-center">
-        <div
-          id="profileIconBox"
-          className="d-flex ms-4 justify-content-center align-items-center flex-shrink-0"
-          style={{ 
-            backgroundColor: notification.type === 'like' ? "black" : "#555", 
-            width: "35px", 
-            height: "35px" 
-          }}
-        >
-          <img src="/src/assets/user_icon.svg" alt="user icon" style={{ width: '20px' }} />
-        </div>
-        <div
-          id="inboxDescription"
-          className="mx-3 col-8 text-black fw-bold"
-        >
-          {/* This displays: "User liked your post" or "User copied your email" */}
-          {notification.message}
-        </div>
+      {/* 1. Content Area (Alignment Fixed) */}
+      <div className="flex-grow-1 d-flex align-items-center overflow-hidden">
+        {formatNotification(notification.message)}
       </div>
-      
-      <div className="col-3 d-flex justify-content-end pe-4">
-        <div className="text-muted" style={{ fontSize: '0.85rem' }}>
+
+      {/* 2. Time Area */}
+      <div className="ms-auto flex-shrink-0 text-end">
+        <div className="text-muted" style={{ fontSize: "0.85rem", whiteSpace: "nowrap" }}>
           {getTimeAgo(notification.created_at)}
         </div>
       </div>

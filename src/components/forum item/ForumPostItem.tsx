@@ -44,7 +44,6 @@ const ForumPostItem = ({
     >
       {/* Left Section - EXACT 50% (col-6) */}
       <div className="col-6 ps-4 d-flex flex-row justify-content-start align-items-center">
-        <div className="bg-dark flex-shrink-0" style={{ width: "35px", height: "35px", borderRadius: "50%" }} />
         <div className="mx-3 text-start text-truncate fw-bold text-dark">{paw.title}</div>
       </div>
 

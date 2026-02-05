@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "/src/stylesheets/signupform.css";
 import { useAuth } from "../AuthContext";
+import { useAppStore } from "../useAppStore";
 
 function formatPhoneNumber(value: string): string {
   const digits = value.replace(/\D/g, "");
@@ -25,6 +26,7 @@ const SignUpForm = () => {
   const [hideTooltips, setHideTooltips] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // Loading state
 
+  const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
   const handleNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setter: (val: string) => void
@@ -81,7 +83,8 @@ const SignUpForm = () => {
       if (result.success) {
         // User is now logged in (token stored, user in context)
         // Navigate to home page instead of login
-        navigate("/");
+          setSuccessMessage("Account Created Successfully! Welcome to Home4Paws.");
+          navigate("/");
       } else {
         // Show error message
         alert("Sign up failed: " + (result.message || "Unknown error"));
@@ -128,7 +131,7 @@ const SignUpForm = () => {
       noValidate
     >
       <img
-        src="/src/assets/favicon.ico"
+        src="/src/assets/faviconFinal3.svg"
         alt="Home4Paws Logo"
         className="mb-3"
       />

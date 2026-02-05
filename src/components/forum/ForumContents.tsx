@@ -4,6 +4,8 @@ import ForumHome from "./ForumHome";
 import type { PawsListing } from "../../api";
 import { getUnreadCount } from "../../api";
 import { useEffect } from "react";
+import { useAppStore } from "../../useAppStore";
+
 interface ForumContentsProps {
   onVariantChange?: (variant: "home" | "inbox") => void;
   showCreateModal: boolean;
@@ -28,8 +30,9 @@ const ForumContents = ({
 }: ForumContentsProps) => {
   const [active, setActive] = useState<"home" | "inbox">("home");
   const [unreadCount, setUnreadCount] = useState(0);
+  const isAuthenticated = !!localStorage.getItem("auth_token");
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchUnread = async () => {
       const res = await getUnreadCount();
       if (res.success) {
@@ -38,7 +41,7 @@ const ForumContents = ({
     };
 
     fetchUnread();
-    
+
     // Optional: Refresh count every 30 seconds
     const interval = setInterval(fetchUnread, 30000);
     return () => clearInterval(interval);
@@ -52,8 +55,8 @@ const ForumContents = ({
     onVariantChange?.(newActive);
 
     if (newActive === "inbox") {
-    setUnreadCount(0);
-  }
+      setUnreadCount(0);
+    }
   };
 
   return (
@@ -93,42 +96,54 @@ const ForumContents = ({
             Home
           </button>
         </div>
+        
         <div className="d-flex flex-row justify-content-around align-items-center w-100">
           <img
             src="/src/assets/inbox_icon.svg"
             className="me-2"
             alt="logo"
             style={{
-              filter:
-                active === "inbox" ? activeColorFilter : inactiveColorFilter,
+              filter: active === "inbox" ? activeColorFilter : inactiveColorFilter,
               transition: "filter 0.3s",
+              opacity: isAuthenticated ? 1 : 0.5, // Fades icon if locked
             }}
           />
           <button
             type="button"
             className="w-100 text-start fw-bold ps-3"
+            // 2. Disable logic: stops clicks and keyboard interaction
+            disabled={!isAuthenticated} 
             style={{
               backgroundColor: active === "inbox" ? "#f1d6e2" : "#ffffff",
               color: active === "inbox" ? "#8b2e58" : "black",
               border: "none",
               borderRadius: "6px",
               height: "3.25rem",
+              // 3. Style logic: provides visual "locked" feedback
+              cursor: isAuthenticated ? "pointer" : "not-allowed",
+              opacity: isAuthenticated ? 1 : 0.6,
             }}
             onClick={() => handleActiveChange("inbox")}
           >
             <div className="d-flex d-row justify-content-between">
               Inbox
-              {unreadCount > 0 && (
-              <span
-                className="text-white text-center"
-                style={{ backgroundColor: "#8b2e58", borderRadius: "8px", width: "30px" }}
-              >
-                 {unreadCount}
-              </span>
+              {/* Only show unread count if user is logged in */}
+              {unreadCount > 0 && isAuthenticated && (
+                <span
+                  className="text-white text-center"
+                  style={{
+                    backgroundColor: "#8b2e58",
+                    borderRadius: "8px",
+                    width: "30px",
+                  }}
+                >
+                  {unreadCount}
+                </span>
               )}
             </div>
           </button>
         </div>
+
         <button
           type="button"
           className="btn btn-primary w-100"

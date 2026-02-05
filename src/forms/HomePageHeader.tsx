@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import "/src/stylesheets/homepage.css";
 import { useState } from "react";
-
+import { useAppStore } from "../useAppStore";  
 interface HomePageHeaderProps {
   whatSelected: string;
 }
@@ -11,6 +11,8 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
   const [selected] = useState(props.whatSelected);
   const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
+
+  const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
   return (
     <nav
       className="sticky-top navbar navbar-expand-lg bg-body-tertiary mt-3 ps-5 pe-5 pt-2 pb-2"
@@ -19,7 +21,7 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
       <div className="container-fluid">
         <h1 className="navbar-brand mb-0 fw-bold fs-5 color-config me-5">
           <img
-            src="/src/assets/favicon.svg"
+            src="/src/assets/faviconFinal3.svg"
             alt="Home4Paws Logo"
             className="me-3"
           />
@@ -66,12 +68,13 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
           {!loading &&
             (user ? (
               <div className="d-flex align-items-center">
-                <span className="me-2">Hello, {user.name}</span>
+                <span className="me-3">Hello, {user.name}</span>
                 <button
                   className="btn btn-secondary custom-btn fw-bold fs-7 ps-3 pe-4"
                   type="button"
                   onClick={async () => {
                     await logout();
+                    setSuccessMessage("Logout successful. See you soon!");
                     navigate("/login");
                   }}
                 >

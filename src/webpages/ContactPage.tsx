@@ -13,11 +13,11 @@ const ContactPage = () => {
         style={{ backgroundColor: "black" }}
       >
         <div
-          className="d-flex flex-column align-items-center justify-content-center position-absolute w-100 h-100 ps-5 align-middle"
+          className="d-flex flex-column align-items-center justify-content-center position-absolute w-100 h-100 align-middle"
           style={{ position: "absolute" }}
         >
-          <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
-            <div className="d-flex flex-column justify-content-center">
+          <div className="d-flex flex-row flex-md-row gap-5 justify-content-center align-items-center">
+            <div className="d-flex col-6 flex-column justify-content-center">
               <h1 className="fw-bold text-white" style={{ fontSize: "3.5rem" }}>
                 Contact us!
               </h1>
@@ -27,20 +27,11 @@ const ContactPage = () => {
                 community of pet lovers grow!
               </p>
             </div>
-            <form
-              className="w-100 h-100 mx-5 p-4 form-control needs-validation"
-              noValidate
-            >
-              <textarea
-                id="feedback"
-                className="form-select"
-                placeholder="Give us your feedback!"
-                rows={5}
-              />
-              <div className="w-100">
-                <button className="w-100 btn btn-success mt-4">Submit</button>
-              </div>
-            </form>
+            <div>
+              <h1 className="mt-4 col-6 fw-normal text-white fs-5">Our Email: <p className="text-white">@contact.home4paws@gmail.com</p>
+                </h1>
+                <p className="text-white">+63 0987 654 3210</p>
+            </div>
           </div>
         </div>
       </div>
