@@ -109,14 +109,25 @@ export const getProfile = async (): Promise<{ success: boolean; user?: User }> =
 };
 
 // 4. PAWS / LISTING FUNCTIONS
-export const getPaws = async (page = 1, search = "", location = "All", sort= "newest") => {
+export const getPaws = async (
+  page = 1, 
+  search = "", 
+  location = "All", 
+  // Add this optional parameter with a default of 'all'
+  searchIn: 'all' | 'title' | 'description' = 'all', 
+  sort = "newest", // Ensure sort parameter is still here if needed
+  status = "all"
+) => {
   try {
     const { data } = await api.get("/paws", {
       params: { 
         page, 
         search, 
         location: location !== "All" ? location : undefined, 
-        sort: sort
+        sort: sort,
+        // Send this new parameter to the backend
+        search_in: searchIn,
+        status
       },
     });
     return {

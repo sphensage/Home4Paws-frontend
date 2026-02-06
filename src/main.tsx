@@ -5,9 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 import { AuthProvider } from "./AuthContext.tsx";
-import LoginPage from "./webpages/LoginPage.tsx";
 import SignUpPage from "./webpages/SignUpPage.tsx";
-import ErrorPage from "./webpages/ErrorPage.tsx";
 import { SuccessToast } from "./SuccessToast.tsx";
 
 // new
@@ -20,11 +18,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <NewHomePage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
   },
   {
     path: "/signup",

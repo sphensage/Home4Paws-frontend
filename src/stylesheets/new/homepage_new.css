@@ -85,7 +85,27 @@ body {
 
 .search-bg {
   background-color: #572841;
-  color: #ffffff; /* Actual text color */
+  color:white; /* Actual text color */
+  border: none; /* Removes the default border */
+  outline: none; /* Removes the blue outline when clicking */
+  padding: 8px 20px; /* Taller (vertical) and wider (horizontal) */
+  border-radius: 8px; /* Optional: smooth corners */
+  width: 100%;
+}
+
+#postCreateTitle::file-selector-button {
+  background-color: #572841; /* Change to your brand color */
+  color: white;
+  border: none;
+  border-inline-end-width: 1px;
+  padding: 0.375rem 0.75rem;
+  margin-inline-end: 0.75rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.input-bg {
+  background-color: #50273c;
+  color:white; /* Actual text color */
   border: none; /* Removes the default border */
   outline: none; /* Removes the blue outline when clicking */
   padding: 8px 20px; /* Taller (vertical) and wider (horizontal) */
@@ -95,6 +115,10 @@ body {
 
 .search-bg::placeholder {
   color: #af8598; /* Only styles the hint text */
+}
+
+.input-bg::placeholder {
+  color: #af8598;
 }
 
 .btn-login {
@@ -139,8 +163,8 @@ body {
 
 .hm-stats {
   background-color: #3b1b2c;
-  height: 30vh;
-  min-height: 30vh;
+  height: 40vh;
+  min-height: 40vh;
   border-radius: 5px;
   color: white;
   flex-shrink: 0;
