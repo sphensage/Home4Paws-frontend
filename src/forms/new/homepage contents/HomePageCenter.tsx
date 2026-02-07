@@ -6,6 +6,7 @@ import "/src/stylesheets/new/homepage_new.css";
 import HomePageInbox from "../../../homepage center contents/HomePageInbox";
 import { useAppStore } from "../../../useAppStore"; // Import the store
 import HomePageCreatePost from "../../../homepage center contents/HomePageCreatePost";
+import ViewPost from "../../../homepage center contents/ViewPost";
 
 /* We no longer need this interface or prop drilling:
 interface HomePageCenterProps {
@@ -14,7 +15,7 @@ interface HomePageCenterProps {
 */
 
 const HomePageCenter = (/*{ activeTab }: HomePageCenterProps*/) => {
-  const activeTab = useAppStore(state => state.activeTab);
+  const activeTab = useAppStore((state) => state.activeTab);
 
   return (
     <div
@@ -26,6 +27,7 @@ const HomePageCenter = (/*{ activeTab }: HomePageCenterProps*/) => {
       {activeTab === "trending" && <HomePageTrending />}
       {activeTab === "inbox" && <HomePageInbox />}
       {activeTab === "createPost" && <HomePageCreatePost />}
+      {activeTab === "viewPost" && <ViewPost />}
     </div>
   );
 };

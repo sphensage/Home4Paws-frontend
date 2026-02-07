@@ -7,6 +7,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import type { PawsListing } from "../../api";
+import { useAppStore } from "../../useAppStore";
 
 const timeAgo = (dateString: string) => {
   const date = new Date(dateString);
@@ -29,12 +30,15 @@ const timeAgo = (dateString: string) => {
 };
 
 export const PostItem = ({ paw }: { paw: PawsListing }) => {
+  const setActiveTab = useAppStore((state) => state.setActiveTab);
+
   return (
     <button
       className="w-100 btn-invisible post-bg d-flex flex-column fs-5 p-3 justify-content-start align-items-start"
       data-paw-id={paw.paws_id}
       role="button"
       tabIndex={0}
+      onClick={() => setActiveTab("viewPost")}
     >
       <div className="d-flex flex-row gap-3 fw-bold align-items-center">
         {paw.title}

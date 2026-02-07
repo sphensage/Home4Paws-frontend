@@ -11,7 +11,7 @@ const HomePageContents = () => {
   */
 
   return (
-    <div className="d-flex flex-row gap-5 justify-content-center align-items-start px-5 mt-3">
+    <div className="d-flex flex-row gap-5 justify-content-center align-items-start px-5 mt-4">
       {/* 
       // The Sidebar should eventually read/set the active tab directly from the store
       <HomePageSidebar activeTab={activeTab} setActiveTab={setActiveTab} />

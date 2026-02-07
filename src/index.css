@@ -3,6 +3,11 @@
   color: #8b2e58;
 }
 
+html {
+  filter: contrast(100%);
+  font-size: 90%;
+}
+
 /* Animation for the Success Toast */
 @keyframes slideDownFade {
   0% {

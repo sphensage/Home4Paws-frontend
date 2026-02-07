@@ -15,6 +15,33 @@ body {
   background-color: #5c946d;
 }
 
+.btn-facebook {
+  background-color: #37506b;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-facebook:hover {
+  background-color: #314050;
+}
+
+.txt-liked {
+  color: #ff3453 !important;
+  transition: color 0.2s ease-in-out;
+}
+
+.txt-liked:hover {
+  color: #d36273 !important;
+}
+
+.txt-arrow {
+  color: #694b58;
+  transition: color 0.2s ease-in-out;
+}
+
+.txt-arrow:hover {
+  color: white;
+}
+
 .txt-nav-unselected {
   color: #af8598;
   text-decoration: none;
@@ -23,6 +50,10 @@ body {
 
 .txt-nav-unselected:hover {
   color: white;
+}
+
+.text-bg-warning {
+  background-color: #c08b59 !important;
 }
 
 .txt-nav-selected {
@@ -85,7 +116,7 @@ body {
 
 .search-bg {
   background-color: #572841;
-  color:white; /* Actual text color */
+  color: white; /* Actual text color */
   border: none; /* Removes the default border */
   outline: none; /* Removes the blue outline when clicking */
   padding: 8px 20px; /* Taller (vertical) and wider (horizontal) */
@@ -105,7 +136,7 @@ body {
 
 .input-bg {
   background-color: #50273c;
-  color:white; /* Actual text color */
+  color: white; /* Actual text color */
   border: none; /* Removes the default border */
   outline: none; /* Removes the blue outline when clicking */
   padding: 8px 20px; /* Taller (vertical) and wider (horizontal) */
@@ -163,8 +194,8 @@ body {
 
 .hm-stats {
   background-color: #3b1b2c;
-  height: 40vh;
-  min-height: 40vh;
+  height: 30vh;
+  min-height: 30vh;
   border-radius: 5px;
   color: white;
   flex-shrink: 0;
@@ -212,12 +243,54 @@ body {
 }
 
 .custom-select {
-  /* Remove blue glow */
-  box-shadow: none !important;
-  outline: none !important;
+  /* 1. Sets the color for the currently selected text (the button) */
+  color: white !important;
+
+  appearance: base-select !important;
+  -webkit-appearance: base-select !important;
+  height: 30px !important;
   border: none !important;
+  box-shadow: none !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+  text-align: center !important;
+  text-align-last: center !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.custom-select option {
+  /* 2. Sets the color for the text inside the dropdown list */
+  color: white !important;
+
+  /* 3. Uses a solid color for better browser compatibility */
+  background-color: #333333 !important;
 }
 
 .txt-muted {
   color: #694b58;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-fade-in {
+  animation: fadeIn 0.05s ease-in-out;
+}
+
+.search-fade {
+  transition:
+    opacity 0.5s ease-in-out,
+    visibility 0.5s ease-in-out;
+}
+
+.search-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }

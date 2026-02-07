@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import "/src/stylesheets/new/homepage_new.css";
+import "/src/stylesheets/new/createpost.css";
 import { useAppStore } from "../../useAppStore";
 import { createPaw } from "../../api";
 
@@ -16,13 +17,16 @@ const CreatePostForm = () => {
     if (!form) return;
 
     // 1. Reset custom validity before re-checking
-    const fbInput = form.querySelector("#postCreateFacebook") as HTMLInputElement;
+    const fbInput = form.querySelector(
+      "#postCreateFacebook",
+    ) as HTMLInputElement;
     fbInput.setCustomValidity("");
 
     // 2. FB Regex Validation
     let fbValue = fbInput.value.trim();
     if (fbValue && !fbValue.startsWith("http")) fbValue = "https://" + fbValue;
-    const fbRegex = /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9.]{3,}\/?(\?id=\d+)?$/;
+    const fbRegex =
+      /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9.]{3,}\/?(\?id=\d+)?$/;
 
     if (fbValue && !fbRegex.test(fbValue)) {
       fbInput.setCustomValidity("Invalid");
@@ -39,7 +43,7 @@ const CreatePostForm = () => {
 
     setLoading(true);
     setErrorMsg("");
-    
+
     const formData = new FormData(form);
     const result = await createPaw({
       title: formData.get("postCreateTitle"),
@@ -66,18 +70,23 @@ const CreatePostForm = () => {
         ref={formRef}
         onSubmit={handleSubmit}
         className="p-3 w-100 d-flex flex-column gap-3 justify-content-start align-items-start hm-content needs-validation"
-        style={{ height: "60vh", minHeight: "60vh", overflowY: "scroll" }}
+        style={{ height: "63vh", minHeight: "63vh", overflowY: "scroll" }}
         noValidate
       >
         <div className="w-100">
-          <label className="txt-secondary fw-bold" htmlFor="postCreateTitle">
-            Post title <span className="txt-muted fw-normal">(30 characters max)</span>
+          <label
+            className="txt-secondary fw-bold mb-1"
+            htmlFor="postCreateTitle"
+          >
+            Post title{" "}
+            <span className="txt-muted fw-normal">(30 characters max)</span>
           </label>
           <input
             name="postCreateTitle"
             id="postCreateTitle"
             type="text"
-            className="form-control input-bg"
+            className="input-bg"
+            style={{ paddingLeft: "10px" }}
             placeholder="What will be your post title?"
             maxLength={30}
             required
@@ -87,14 +96,19 @@ const CreatePostForm = () => {
         </div>
 
         <div className="w-100">
-          <label className="txt-secondary fw-bold" htmlFor="postCreateDesc">
-            Post Description <span className="txt-muted fw-normal">(250 characters max)</span>
+          <label
+            className="txt-secondary fw-bold mb-1"
+            htmlFor="postCreateDesc"
+          >
+            Post Description{" "}
+            <span className="txt-muted fw-normal">(250 characters max)</span>
           </label>
           <textarea
             name="postCreateDesc"
             id="postCreateDesc"
-            className="form-control input-bg flex-shrink-0"
-            rows={6}
+            className="input-bg flex-shrink-0"
+            style={{ paddingLeft: "10px" }}
+            rows={5}
             placeholder="What will your post be about?"
             maxLength={250}
             required
@@ -104,12 +118,13 @@ const CreatePostForm = () => {
         </div>
 
         <div className="w-100">
-          <label className="txt-secondary fw-bold" htmlFor="locDataList">
+          <label className="txt-secondary fw-bold mb-1" htmlFor="locDataList">
             Your Location
           </label>
           <input
             name="locDataList"
-            className="form-control"
+            className="input-bg"
+            style={{ paddingLeft: "10px" }}
             list="datalistOptions"
             id="locDataList"
             placeholder="Type your location here (if exists)"
@@ -125,8 +140,13 @@ const CreatePostForm = () => {
         </div>
 
         <div className="w-100">
-          <label className="txt-secondary fw-bold" htmlFor="postCreateImages" style={{ color: "#af8598" }}>
-            Attach Image/s <span className="txt-muted fw-normal">(1 image min, 3 max)</span>
+          <label
+            className="txt-secondary fw-bold mb-1"
+            htmlFor="postCreateImages"
+            style={{ color: "#af8598" }}
+          >
+            Attach Image/s{" "}
+            <span className="txt-muted fw-normal">(1 image min, 3 max)</span>
           </label>
           <input
             id="postCreateImages"
@@ -141,18 +161,28 @@ const CreatePostForm = () => {
             }}
             required
           />
-          <div className="invalid-feedback">At least one image is required!</div>
+          <div className="invalid-feedback">
+            At least one image is required!
+          </div>
         </div>
 
         <div className="w-100 mb-2">
-          <label className="txt-secondary fw-bold" htmlFor="postCreateFacebook" style={{ color: "#6e8eff" }}>
-            Your facebook account <span className="txt-muted fw-normal">(Valid profile link only)</span>
+          <label
+            className="txt-secondary fw-bold mb-1"
+            htmlFor="postCreateFacebook"
+            style={{ color: "#6e8eff" }}
+          >
+            Your Facebook account{" "}
+            <span className="txt-muted fw-normal">
+              (Valid profile link only)
+            </span>
           </label>
           <input
             name="postCreateFacebook"
             id="postCreateFacebook"
             type="url"
-            className="form-control input-bg"
+            className="input-bg"
+            style={{ paddingLeft: "10px" }}
             placeholder="https://www.facebook.com/..."
             required
             onInput={(e) => {
@@ -160,17 +190,21 @@ const CreatePostForm = () => {
               setErrorMsg("");
             }}
           />
-          <div className="invalid-feedback">A valid Facebook link is required!</div>
+          <div className="invalid-feedback">
+            A valid Facebook link is required!
+          </div>
         </div>
 
-        {errorMsg && <div className="alert alert-danger w-100 p-2 small">{errorMsg}</div>}
+        {errorMsg && (
+          <div className="alert alert-danger w-100 p-2 small">{errorMsg}</div>
+        )}
       </form>
 
       <div className="d-flex flex-row justify-content-end w-100 mt-2">
-        <button 
-          type="submit" 
-          form="createPostForm" 
-          className="col-3 btn btn-login" 
+        <button
+          type="submit"
+          form="createPostForm"
+          className="col-3 btn btn-login"
           disabled={loading}
         >
           {loading ? "Posting..." : "Post"}
