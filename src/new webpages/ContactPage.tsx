@@ -1,4 +1,3 @@
-import React from "react";
 import HomePageNavbar from "../forms/new/HomePageNavbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

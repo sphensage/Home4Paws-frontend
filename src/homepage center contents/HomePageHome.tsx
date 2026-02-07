@@ -1,9 +1,8 @@
 // import React from "react"; // Not needed if you only use hooks
 import ListPostItems from "./item cards/list card/ListPostItems";
 import "/src/stylesheets/new/homepage_new.css";
-import { useAppStore } from "../useAppStore";
 import HomePageMiniNav from "../forms/new/HomePageMiniNav";
-import ListPostItemsDummy from "./item cards/list card/ListPostItemDummy";
+// import ListPostItemsDummy from "./item cards/list card/ListPostItemDummy";
 
 const HomePageHome = () => {
   return (

@@ -1,4 +1,3 @@
-import React from "react";
 import { PostItem } from "../PostItem";
 import { useAppStore } from "../../../useAppStore"; // Adjust the path as necessary
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

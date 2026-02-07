@@ -1,13 +1,7 @@
-import React from "react";
-import HomePage from "./HomePage";
 import HomePageNavbar from "../forms/new/HomePageNavbar";
 import "/src/stylesheets/new/images.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBullseye,
-  faDog,
-  faSignsPost,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBullseye, faDog } from "@fortawesome/free-solid-svg-icons";
 
 const AboutPage = () => {
   return (
