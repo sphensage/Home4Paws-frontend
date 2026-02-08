@@ -4,6 +4,7 @@ import { useAppStore } from "../useAppStore";
 import HomePageMiniNav from "../forms/new/HomePageMiniNav";
 
 const HomePageFeatured = () => {
+
   return (
     <div className="d-flex flex-column gap-3">
       <div className="d-flex flex-row justify-content-between align-items-start">

@@ -31,6 +31,12 @@ const timeAgo = (dateString: string) => {
 
 export const PostItem = ({ paw }: { paw: PawsListing }) => {
   const setActiveTab = useAppStore((state) => state.setActiveTab);
+  const setActivePaw = useAppStore((state) => state.setActivePaw);
+
+   const handleClick = () => {
+     setActivePaw(paw); // 1. Set the data
+     setActiveTab("viewPost"); // 2. Switch the tab
+   };
 
   return (
     <button
@@ -38,7 +44,7 @@ export const PostItem = ({ paw }: { paw: PawsListing }) => {
       data-paw-id={paw.paws_id}
       role="button"
       tabIndex={0}
-      onClick={() => setActiveTab("viewPost")}
+      onClick={() => handleClick()}
     >
       <div className="d-flex flex-row gap-3 fw-bold align-items-center">
         {paw.title}

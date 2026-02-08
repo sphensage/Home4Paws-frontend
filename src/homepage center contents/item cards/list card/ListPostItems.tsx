@@ -7,6 +7,7 @@ const ListPostItems = () => {
   // Get the list of pets and the loading status from the store
   const paws = useAppStore((state) => state.paws);
   const loading = useAppStore((state) => state.loading);
+  
 
   if (loading) {
     return (

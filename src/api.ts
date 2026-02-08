@@ -62,13 +62,14 @@ export interface InboxNotification {
   receiver_id: number;
   sender_id: number;
   paws_id: number;
-  type: 'like' | 'email_copy'; // Specific types we defined
+  type: 'like' | 'facebook_click'; // Updated to match your controller logic
   message: string;
   is_read: boolean;
-  created_at: string; // Use this for "7 minutes ago" text
+  created_at: string;
   updated_at: string;
-  sender: Pick<User, 'id' | 'name'>; // We use the 'with(sender:id,name)' in backend
-  paws: { paws_id: number; title: string }; // We use the 'with(paws:paws_id,title)' in backend
+  sender: Pick<User, 'id' | 'name'>;
+  // Change this to use the PawsListing type you already defined
+  paws: PawsListing; 
 }
 
 // 3. AUTHENTICATION FUNCTIONS
@@ -110,46 +111,59 @@ export const getProfile = async (): Promise<{ success: boolean; user?: User }> =
 
 // 4. PAWS / LISTING FUNCTIONS
 export const getPaws = async (
-  page = 1, 
-  search = "", 
-  location = "All", 
-  // Add this optional parameter with a default of 'all'
-  searchIn: 'all' | 'title' | 'description' = 'all', 
-  sort = "newest", // Ensure sort parameter is still here if needed
-  status = "all"
+  page = 1,
+  search = "",
+  location = "All",
+  searchIn: "all" | "title" | "description" = "all",
+  sort = "newest", // Default sort
+  status = "All"
 ) => {
   try {
-    const { data } = await api.get("/paws", {
-      params: { 
-        page, 
-        search, 
-        location: location !== "All" ? location : undefined, 
-        sort: sort,
-        // Send this new parameter to the backend
-        search_in: searchIn,
-        status
-      },
-    });
+    const params: any = {
+      page,
+      search,
+      sort, // This will now send "trending", "popular", or "newest"
+      search_in: searchIn,
+    };
+
+    // Only send location if it's not the default "All"
+    if (location !== "All") params.location = location;
+
+    // Send status as lowercase to match backend strtolower() check
+    if (status !== "All") params.status = status.toLowerCase();
+
+    const { data } = await api.get("/paws", { params });
+    
     return {
       success: true,
-      paws: data.data as PawsListing[],
+      paws: data.data,
       meta: {
         current_page: data.current_page,
         last_page: data.last_page,
         total: data.total,
       },
     };
-  } catch {
-    return { success: false, message: "Failed to fetch posts" };
+  } catch (error) {
+    console.error("Fetch Paws Error:", error);
+    return { success: false, paws: [] };
   }
 };
 
 export const getPaw = async (id: number) => {
   try {
+    // 1. Laravel returns: { "message": "...", "data": { ...listing... } }
     const { data } = await api.get(`/paws/${id}`);
-    return { success: true, paw: data.data as PawsListing };
-  } catch {
-    return { success: false, message: "Post not found" };
+    
+    // 2. We extract the listing from 'data' and return it as 'paw'
+    return { 
+      success: true, 
+      paw: data.data as PawsListing 
+    };
+  } catch (error: any) {
+    return { 
+      success: false, 
+      message: error.response?.data?.message || "Post not found" 
+    };
   }
 };
 

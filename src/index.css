@@ -30,6 +30,16 @@ html {
   animation: slideDownFade 3s ease-in-out forwards;
 }
 
+.clickable-link {
+  text-decoration: underline; /* Underline by default */
+  transition: all 0.2s ease-in-out;
+}
+
+.clickable-link:hover {
+  text-decoration: none !important; /* Underline disappears on hover */
+  color: #ffffff !important;        /* Optional: Glow effect */
+}
+
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

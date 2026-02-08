@@ -48,7 +48,7 @@ const CreatePostForm = () => {
     const result = await createPaw({
       title: formData.get("postCreateTitle"),
       description: formData.get("postCreateDesc"),
-      location: formData.get("locDataList"),
+      location: formData.get("location"),
       fb_link: fbValue,
       photos: files,
     });
@@ -85,7 +85,7 @@ const CreatePostForm = () => {
             name="postCreateTitle"
             id="postCreateTitle"
             type="text"
-            className="input-bg"
+            className="form-control input-bg" // Added form-control for red border
             style={{ paddingLeft: "10px" }}
             placeholder="What will be your post title?"
             maxLength={30}
@@ -106,7 +106,7 @@ const CreatePostForm = () => {
           <textarea
             name="postCreateDesc"
             id="postCreateDesc"
-            className="input-bg flex-shrink-0"
+            className="form-control input-bg flex-shrink-0" // Added form-control for red border
             style={{ paddingLeft: "10px" }}
             rows={5}
             placeholder="What will your post be about?"
@@ -118,25 +118,26 @@ const CreatePostForm = () => {
         </div>
 
         <div className="w-100">
-          <label className="txt-secondary fw-bold mb-1" htmlFor="locDataList">
+          <label className="txt-secondary fw-bold mb-1" htmlFor="locSelect">
             Your Location
           </label>
-          <input
-            name="locDataList"
-            className="input-bg"
-            style={{ paddingLeft: "10px" }}
-            list="datalistOptions"
-            id="locDataList"
-            placeholder="Type your location here (if exists)"
+          <select
+            name="location"
+            id="locSelect"
+            className="form-select input-bg w-100" // Changed to form-select for red border
+            style={{ paddingLeft: "10px", height: "38px" }}
             required
             onInput={(e) => e.currentTarget.setCustomValidity("")}
-          />
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select your location
+            </option>
+            <option value="Caloocan">Caloocan</option>
+            <option value="Metro Manila">Metro Manila</option>
+            <option value="Quezon City">Quezon City</option>
+          </select>
           <div className="invalid-feedback">Please select a location!</div>
-          <datalist id="datalistOptions">
-            <option value="Caloocan" />
-            <option value="Metro Manila" />
-            <option value="Quezon City" />
-          </datalist>
         </div>
 
         <div className="w-100">
@@ -181,9 +182,9 @@ const CreatePostForm = () => {
             name="postCreateFacebook"
             id="postCreateFacebook"
             type="url"
-            className="input-bg"
+            className="form-control input-bg" // Added form-control for red border
             style={{ paddingLeft: "10px" }}
-            placeholder="https://www.facebook.com/..."
+            placeholder="https://www.facebook.com..."
             required
             onInput={(e) => {
               e.currentTarget.setCustomValidity("");

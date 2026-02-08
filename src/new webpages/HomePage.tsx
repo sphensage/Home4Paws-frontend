@@ -3,6 +3,8 @@ import HomePageNavbar from "../forms/new/HomePageNavbar";
 import HomePageContents from "../forms/new/HomePageContents";
 import { SuccessToast } from "../SuccessToast";
 import { useAppStore } from "../useAppStore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
   const activeTab = useAppStore((state) => state.activeTab);
@@ -11,25 +13,30 @@ const HomePage = () => {
   const checkAuthStatus = useAppStore((state) => state.checkAuthStatus);
   const searchQuery = useAppStore((state) => state.searchQuery);
   const selectedCity = useAppStore((state) => state.selectedCity);
+
   const isImageDisplayed = useAppStore((state) => state.isImageDisplayed);
   const setImageDisplay = useAppStore((state) => state.setImageDisplay);
 
-  // 1. Check Auth once on mount
+  // Carousel-related state
+  const selectedImageUrl = useAppStore((state) => state.selectedImageUrl);
+  const nextImage = useAppStore((state) => state.nextImage);
+  const prevImage = useAppStore((state) => state.prevImage);
+  const activePaw = useAppStore((state) => state.activePaw);
+
+  // 1. Check auth once on mount
   useEffect(() => {
     checkAuthStatus();
   }, [checkAuthStatus]);
 
-  // 2. Combined Watcher for Tab Switching and Searching
+  // 2. Watch tab/search/city changes
   useEffect(() => {
     if (activeTab === "inbox") {
-      // Fetch inbox immediately when tab is switched to inbox
       fetchInbox();
     } else if (
       activeTab === "home" ||
       activeTab === "featured" ||
       activeTab === "trending"
     ) {
-      // Debounce the pet fetching for home/featured/trending tabs
       const delayDebounceFn = setTimeout(() => {
         fetchHomePaws(1);
       }, 400);
@@ -53,26 +60,94 @@ const HomePage = () => {
             left: 0,
             width: "100vw",
             height: "100vh",
-            backgroundColor: "rgba(0, 0, 0, 0.8)", // Dark backdrop
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
-            zIndex: 9999, // Higher than other content
+            zIndex: 9999,
           }}
-          onClick={() => setImageDisplay(false)} // Close when clicking backdrop
+          onClick={() => setImageDisplay(false)}
         >
-          {/* Stop click propagation so clicking the content doesn't close it */}
+          {/* Previous Button */}
+          {activePaw && activePaw.photos.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevImage();
+              }}
+              style={{
+                position: "absolute",
+                left: 20,
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10000,
+                fontSize: "2rem",
+                color: "white",
+                background: "transparent",
+                border: "none",
+                width: "50px",
+                height: "50px",
+                cursor: "pointer",
+              }}
+            >
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+          )}
+
+          {/* FIXED IMAGE CONTAINER */}
           <div
-            className="d-flex align-items-center justify-content-center"
-            onClick={() => setImageDisplay(false)}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "800px",
+              height: "500px",
+              maxWidth: "90vw",
+              maxHeight: "80vh",
+              backgroundColor: "#000",
+              borderRadius: "12px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+            }}
           >
             <img
-              src="Home4Paws-frontend\src\assets\pet_img4.jpg"
+              src={selectedImageUrl || "placeholder.jpg"}
               alt="Preview"
-              style={{ maxWidth: "80%", maxHeight: "80%" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                borderRadius: "12px",
+              }}
             />
           </div>
+
+          {/* Next Button */}
+          {activePaw && activePaw.photos.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                nextImage();
+              }}
+              style={{
+                position: "absolute",
+                right: 20,
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10000,
+                fontSize: "2rem",
+                color: "white",
+                background: "transparent",
+                border: "none",
+                width: "50px",
+                height: "50px",
+                cursor: "pointer",
+              }}
+            >
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          )}
         </div>
       )}
     </>

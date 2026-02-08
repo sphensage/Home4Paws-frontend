@@ -67,13 +67,15 @@ const HomePageSidebar = () => {
     }`;
   };
 
-  const handleLogout = () => {
+    const handleLogout = () => {
     localStorage.removeItem("auth_token");
     store.setSuccessMessage("You have been signed out.");
-    store.setActiveTab("home"); 
-    navigate('/');
-    window.location.reload(); 
+    store.setActiveTab("home");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000); // Wait 1 second for the user to see the toast
   };
+
 
   return (
     <div className="hm-content d-flex flex-column pt-3" style={{ width: "40vh" }}>

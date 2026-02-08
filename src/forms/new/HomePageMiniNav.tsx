@@ -1,25 +1,60 @@
 import React from "react";
-import Select from "react-select/base";
 import { useAppStore } from "../../useAppStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
-  faMap,
   faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
 
 const HomePageMiniNav = () => {
+  /* -------- Store Actions & State -------- */
   const setActiveTab = useAppStore((state) => state.setActiveTab);
+  const fetchHomePaws = useAppStore((state) => state.fetchHomePaws);
 
   const selectedCity = useAppStore((state) => state.selectedCity);
   const setSelectedCity = useAppStore((state) => state.setSelectedCity);
 
-  const handleLocationChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const filterStatus = useAppStore((state) => state.filterStatus);
+  const setFilterStatus = useAppStore((state) => state.setFilterStatus);
+
+  // Pagination State from Store
+  const currentPage = useAppStore((state) => state.currentPage);
+  const lastPage = useAppStore((state) => state.lastPage);
+
+  /* -------- Handlers -------- */
+
+  const handleStatusChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = event.target.value as "all" | "available" | "adopted";
+    setFilterStatus(val);
+    await fetchHomePaws(1);
+  };
+
+  const handleLocationChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(event.target.value);
-    // Note: The main useEffect in HomePage.tsx or in the store handles refetching when this value changes.
+    await fetchHomePaws(1);
+  };
+
+  // Pagination Handlers
+  const handlePrevPage = async () => {
+    if (currentPage > 1) {
+      await fetchHomePaws(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = async () => {
+    if (currentPage < lastPage) {
+      await fetchHomePaws(currentPage + 1);
+    }
+  };
+
+  /* -------- Styles -------- */
+  const selectStyle = {
+    backgroundColor: "rgba(48, 24, 36, 0.5)",
+    boxShadow: "none",
+    border: "none",
+    color: "white",
+    fontSize: "14px"
   };
 
   return (
@@ -27,79 +62,79 @@ const HomePageMiniNav = () => {
       <div className="d-flex align-items-center">
         <div className="d-flex flex-row gap-2 align-items-center justify-content-center">
           <div className="d-flex flex-row gap-1 align-items-center">
+
+            {/* Status Filter */}
             <div>
               <select
                 className="form-select d-flex align-items-center"
-                style={{
-                  backgroundColor: "rgba(48, 24, 36, 0.5)",
-                  boxShadow: "none",
-                  border: "none",
-                }}
+                style={selectStyle}
+                value={filterStatus}
+                onChange={handleStatusChange}
               >
-                <option value="All" className="text-center">
-                  All
-                </option>
-                <option value="Open" className="text-center">
-                  Open
-                </option>
-                <option value="Adopted" className="text-center">
-                  Adopted
-                </option>
+                <option value="all">All</option>
+                <option value="available">Open</option>
+                <option value="adopted">Adopted</option>
               </select>
             </div>
+
+            {/* City Filter */}
             <div>
               <select
                 className="form-select d-flex align-items-center"
-                style={{
-                  backgroundColor: "rgba(48, 24, 36, 0.5)",
-                  boxShadow: "none",
-                  border: "none",
-                }}
+                style={selectStyle}
                 value={selectedCity}
                 onChange={handleLocationChange}
               >
-                <option value="Everywhere" className="text-center">
-                  Everywhere
-                </option>
-                <option value="Caloocan" className="text-center">
-                  Caloocan
-                </option>
-                <option value="Metro Manila" className="text-center">
-                  Metro Manila
-                </option>
-                <option value="Quezon City" className="text-center">
-                  Quezon City
-                </option>
+                <option value="All">Everywhere</option>
+                <option value="Caloocan">Caloocan</option>
+                <option value="Metro Manila">Metro Manila</option>
+                <option value="Quezon City">Quezon City</option>
               </select>
             </div>
+
           </div>
         </div>
       </div>
 
       <button
         type="button"
-        className="btn d-flex flex-row gap-2 justify-content-center btn-success text-white fw-bold col-1 align-items-center"
-        style={{ height: "30px", width: "70px" }}
+        className="btn d-flex flex-row gap-2 justify-content-center btn-success text-white fw-bold align-items-center"
+        style={{ height: "30px", width: "80px", fontSize: "13px" }}
         onClick={() => setActiveTab("createPost")}
       >
-        Post <FontAwesomeIcon icon={faSquarePlus} size="lg" />
+        Post <FontAwesomeIcon icon={faSquarePlus} />
       </button>
 
-      <div className="d-flex flex-row gap-3">
-        <button type="button" className="btn-invisible">
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            size="lg"
-            className="txt-arrow"
-          />
+      {/* Pagination Controls */}
+      <div className="d-flex flex-row gap-3 align-items-center ms-2">
+        <button
+            type="button"
+            className="btn-invisible p-0 border-0"
+            onClick={handlePrevPage}
+            disabled={currentPage <= 1}
+            style={{
+                opacity: currentPage <= 1 ? 0.4 : 1,
+                cursor: currentPage <= 1 ? "not-allowed" : "pointer"
+            }}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} className="txt-arrow" />
         </button>
-        1
-        <button type="button" className="btn-invisible">
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            size="lg"
-            className="txt-arrow"
-          />
+
+        <span className="text-white" style={{ fontSize: "14px", minWidth: "40px", textAlign: "center" }}>
+          {currentPage} / {lastPage}
+        </span>
+
+        <button
+            type="button"
+            className="btn-invisible p-0 border-0"
+            onClick={handleNextPage}
+            disabled={currentPage >= lastPage}
+            style={{
+                opacity: currentPage >= lastPage ? 0.4 : 1,
+                cursor: currentPage >= lastPage ? "not-allowed" : "pointer"
+            }}
+        >
+          <FontAwesomeIcon icon={faChevronRight} className="txt-arrow" />
         </button>
       </div>
     </div>

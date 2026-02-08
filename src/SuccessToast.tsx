@@ -10,8 +10,8 @@ export const SuccessToast = () => {
       className="position-fixed top-0 start-50 translate-middle-x mt-4 shadow-lg p-3 text-white fw-bold toast-animate"
       style={{
         zIndex: 10000,
-        backgroundColor: "rgba(139, 46, 88, 0.95)", // Slightly transparent version of your color
-        backdropFilter: "blur(4px)", // Cooler glass effect
+        backgroundColor: "rgba(139, 46, 88, 0.95)",
+        backdropFilter: "blur(4px)",
         borderRadius: "12px",
         minWidth: "320px",
         textAlign: "center",
@@ -22,8 +22,7 @@ export const SuccessToast = () => {
         gap: "10px"
       }}
     >
-      {/* Adding a checkmark icon for extra flair */}
-      <span style={{ fontSize: "1.2rem" }}>✓</span>
+      <span style={{ fontSize: "1.2rem" }}>🐾</span>
       {message}
     </div>
   );
