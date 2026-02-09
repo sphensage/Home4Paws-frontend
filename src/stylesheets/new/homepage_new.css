@@ -28,6 +28,10 @@ body {
   background-color: #314050;
 }
 
+.txt-tertiary {
+  color: #d36273 !important;
+}
+
 .txt-liked {
   color: #ff3453 !important;
   transition: color 0.2s ease-in-out;
@@ -240,6 +244,10 @@ body {
 
 .btn-sidebar.inbox-active.active {
   border-right: 5px solid #dddb75; /* Green for Trending */
+}
+
+.btn-sidebar.your_posts-active.active {
+  border-right: 5px solid #e77676; /* Green for Trending */
 }
 
 .btn-sidebar:hover {

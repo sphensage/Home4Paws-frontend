@@ -5,6 +5,7 @@ import {
   faClockRotateLeft,
   faHeart,
   faUser,
+  faCompass,
 } from "@fortawesome/free-solid-svg-icons";
 import type { PawsListing } from "../../api";
 import { useAppStore } from "../../useAppStore";
@@ -32,16 +33,16 @@ const timeAgo = (dateString: string) => {
 export const PostItem = ({ paw }: { paw: PawsListing }) => {
   const setActiveTab = useAppStore((state) => state.setActiveTab);
   const setActivePaw = useAppStore((state) => state.setActivePaw);
-  
+
   // Get the current logged-in user from the store
   const currentUser = useAppStore((state) => state.user);
-  
+
   // Logic to determine if the current user owns this specific post
   const isOwner = currentUser && Number(currentUser.id) === Number(paw.user_id);
 
-    const hasLiked = currentUser && paw.reactions?.some(
-    (r) => Number(r.user_id) === Number(currentUser.id)
-  );
+  const hasLiked =
+    currentUser &&
+    paw.reactions?.some((r) => Number(r.user_id) === Number(currentUser.id));
   const handleClick = () => {
     setActivePaw(paw); // Set the active post data
     setActiveTab("viewPost"); // Switch the tab to view details
@@ -57,10 +58,10 @@ export const PostItem = ({ paw }: { paw: PawsListing }) => {
     >
       <div className="d-flex flex-row gap-3 fw-bold align-items-center">
         {paw.title}
-        
+
         {/* Conditional rendering for the user's name */}
-        <div 
-          className={`fw-normal ${isOwner ? "txt-success" : "post-user"}`} 
+        <div
+          className={`fw-normal ${isOwner ? "txt-success" : "post-user"}`}
           style={{ fontSize: "15px" }}
         >
           <FontAwesomeIcon icon={faUser} size="xs" className="me-2" />
@@ -97,11 +98,19 @@ export const PostItem = ({ paw }: { paw: PawsListing }) => {
           {timeAgo(paw.created_at)}
         </div>
 
-       <div 
-          className={hasLiked ? "text-danger" : "txt-main-label"} 
+        <div
+          className={hasLiked ? "text-danger" : "txt-main-label"}
           style={{ fontSize: "13px" }}
         >
           <FontAwesomeIcon icon={faHeart} /> {paw.reactions_count}
+        </div>
+
+        <div
+          className="d-flex flex-row align-items-center gap-2 fw-normal txt-tertiary"
+          style={{ fontSize: "13px" }}
+        >
+          <FontAwesomeIcon icon={faCompass} size="lg" />
+          {paw.location || "Location not specified"}
         </div>
       </div>
     </button>

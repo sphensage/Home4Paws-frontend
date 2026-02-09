@@ -167,7 +167,7 @@ const ViewPost = () => {
           </span>
         </div>
 
-        <div className="txt-secondary fw-normal mb-1">
+        <div className="txt-tertiary fw-normal mb-1">
           <FontAwesomeIcon icon={faCompass} size="sm" /> {paw.location || "Location not specified"}
         </div>
 
@@ -175,8 +175,8 @@ const ViewPost = () => {
           <FontAwesomeIcon icon={faClockRotateLeft} size="sm" /> {new Date(paw.created_at).toLocaleDateString()}
         </div>
 
-        <div className="mb-5" style={{ fontSize: "15px" }}>{paw.description}</div>
-        <div className="mb-2 txt-muted" style={{ fontSize: "12px" }}>Images:</div>
+        <div className="mb-3" style={{ fontSize: "15px" }}>{paw.description}</div>
+        <div className="mb-1 txt-muted" style={{ fontSize: "12px" }}>Images:</div>
         <ImageGallery photos={paw.photos} handleImageClick={handleImageClick} />
       </div>
 
