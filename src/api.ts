@@ -114,6 +114,7 @@ export const getPaws = async (
   page = 1,
   search = "",
   location = "All",
+  user_id?: number,
   searchIn: "all" | "title" | "description" = "all",
   sort = "newest", // Default sort
   status = "All"
@@ -132,6 +133,7 @@ export const getPaws = async (
     // Send status as lowercase to match backend strtolower() check
     if (status !== "All") params.status = status.toLowerCase();
 
+     if (user_id) params.user_id = user_id;
     const { data } = await api.get("/paws", { params });
     
     return {
@@ -280,5 +282,21 @@ export const getGlobalPawsStats = async () => {
         return { success: false, message: "Failed to fetch global stats" };
     }
 };
+
+export const updatePaw = async (id: number, formData: FormData) => {
+  try {
+    // We use POST but append '_method: PUT' for Laravel compatibility
+    formData.append("_method", "PUT"); 
+
+    const response = await api.post(`/paws/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return { success: true, data: response.data.data };
+  } catch (error: any) {
+    return { success: false, message: error.response?.data?.message || "Update failed" };
+  }
+};
+
+
 
 export default api;

@@ -32,11 +32,20 @@ const timeAgo = (dateString: string) => {
 export const PostItem = ({ paw }: { paw: PawsListing }) => {
   const setActiveTab = useAppStore((state) => state.setActiveTab);
   const setActivePaw = useAppStore((state) => state.setActivePaw);
+  
+  // Get the current logged-in user from the store
+  const currentUser = useAppStore((state) => state.user);
+  
+  // Logic to determine if the current user owns this specific post
+  const isOwner = currentUser && Number(currentUser.id) === Number(paw.user_id);
 
-   const handleClick = () => {
-     setActivePaw(paw); // 1. Set the data
-     setActiveTab("viewPost"); // 2. Switch the tab
-   };
+    const hasLiked = currentUser && paw.reactions?.some(
+    (r) => Number(r.user_id) === Number(currentUser.id)
+  );
+  const handleClick = () => {
+    setActivePaw(paw); // Set the active post data
+    setActiveTab("viewPost"); // Switch the tab to view details
+  };
 
   return (
     <button
@@ -44,14 +53,20 @@ export const PostItem = ({ paw }: { paw: PawsListing }) => {
       data-paw-id={paw.paws_id}
       role="button"
       tabIndex={0}
-      onClick={() => handleClick()}
+      onClick={handleClick}
     >
       <div className="d-flex flex-row gap-3 fw-bold align-items-center">
         {paw.title}
-        <div className="fw-normal post-user" style={{ fontSize: "15px" }}>
+        
+        {/* Conditional rendering for the user's name */}
+        <div 
+          className={`fw-normal ${isOwner ? "txt-success" : "post-user"}`} 
+          style={{ fontSize: "15px" }}
+        >
           <FontAwesomeIcon icon={faUser} size="xs" className="me-2" />
           {paw.user.name}
         </div>
+
         {paw.status === "adopted" ? (
           <span
             className="badge text-bg-warning text-white"
@@ -70,7 +85,7 @@ export const PostItem = ({ paw }: { paw: PawsListing }) => {
       </div>
 
       <div
-        className="fw-normal w-100 text-truncate text-start"
+        className="fw-normal w-100 text-truncate text-start mt-1"
         style={{ fontSize: "15px" }}
       >
         {paw.description}
@@ -82,7 +97,10 @@ export const PostItem = ({ paw }: { paw: PawsListing }) => {
           {timeAgo(paw.created_at)}
         </div>
 
-        <div className="txt-main-label" style={{ fontSize: "13px" }}>
+       <div 
+          className={hasLiked ? "text-danger" : "txt-main-label"} 
+          style={{ fontSize: "13px" }}
+        >
           <FontAwesomeIcon icon={faHeart} /> {paw.reactions_count}
         </div>
       </div>

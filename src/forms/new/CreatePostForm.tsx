@@ -55,6 +55,7 @@ const CreatePostForm = () => {
 
     if (result.success) {
       store.setSuccessMessage("Successfully posted! 🐾");
+      store.fetchStats(); 
       store.setActiveTab("home");
       store.fetchHomePaws(1);
     } else {

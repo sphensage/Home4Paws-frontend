@@ -11,6 +11,10 @@ body {
   color: #ce7853;
 }
 
+.txt-success {
+  color: #01ad65;
+}
+
 .btn-secondary {
   background-color: #5c946d;
 }
@@ -194,8 +198,8 @@ body {
 
 .hm-stats {
   background-color: #3b1b2c;
-  height: 30vh;
-  min-height: 30vh;
+  height: 33vh;
+  min-height: 33vh;
   border-radius: 5px;
   color: white;
   flex-shrink: 0;

@@ -3,6 +3,8 @@ import { useRef, useEffect } from "react";
 import "/src/stylesheets/new/homepage_new.css";
 import { NavLink, useNavigate, useLocation } from "react-router-dom"; // Import useNavigate
 import { useAppStore } from "../../useAppStore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import * as bootstrap from "bootstrap";
 
 const HomePageNavbar = () => {
@@ -127,12 +129,12 @@ const HomePageNavbar = () => {
           <div className="d-flex align-items-center ms-5 gap-3">
             <div className="text-white d-flex align-items-center">
               <div
-                className="rounded-circle bg-secondary d-flex justify-content-center align-items-center me-2"
+                className="d-flex flex-row align-items-center"
                 style={{ width: "35px", height: "35px" }}
               >
-                {user?.name?.charAt(0).toUpperCase() || "U"}
+                <FontAwesomeIcon icon={faCircleUser} size="2x"/>
               </div>
-              <span className="fw-bold">{user?.name || "User"}</span>
+              <span className="ms-2 fw-bold">{user?.name || "User"}</span>
             </div>
           </div>
         ) : (

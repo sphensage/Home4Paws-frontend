@@ -10,6 +10,7 @@ import {
   faChartColumn,
   faHouse,
   faLightbulb,
+  faMessage,
 } from "@fortawesome/free-solid-svg-icons"; 
 
 const HomePageSidebar = () => {
@@ -102,6 +103,15 @@ const HomePageSidebar = () => {
             <FontAwesomeIcon icon={faBell} size="lg" /> Inbox
           </button>
 
+            <button 
+            type="button"
+            className="w-100 p-4 btn-sidebar btn-invisible d-flex flex-row justify-content-start gap-4 align-items-center"
+            onClick={() => setActiveTab("your_posts")}
+          >
+            <FontAwesomeIcon icon={faMessage} size="lg" /> Your Posts
+          </button>
+          
+
           <button 
             ref={logoutBtnRef}
             type="button"
@@ -109,6 +119,7 @@ const HomePageSidebar = () => {
           >
             <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg" /> Sign out
           </button>
+
         </>
       )}
     </div>

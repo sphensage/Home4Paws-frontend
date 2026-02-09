@@ -79,6 +79,8 @@ const ViewPost = () => {
     (r) => Number(r.user_id) === Number(user?.id),
   );
 
+  
+
   /* -------- Handlers -------- */
     const onFacebookClick = async () => {
     // 1. Guest Check
@@ -156,7 +158,7 @@ const ViewPost = () => {
       <div className="p-3 w-100 d-flex flex-column gap-1 hm-content" style={{ height: "60vh", minHeight: "60vh", overflowY: "scroll" }}>
         <div className="d-flex flex-row gap-3 fw-bold align-items-center" style={{ fontSize: "19px" }}>
           {paw.title}
-          <div className="fw-normal post-user" style={{ fontSize: "13px" }}>
+          <div  className={`fw-normal ${isOwner ? "txt-success" : "post-user"}`} style={{ fontSize: "14px" }}>
             <FontAwesomeIcon icon={faUser} size="xs" className="me-2" />
             {paw.user?.name || "Unknown User"}
           </div>
@@ -193,13 +195,22 @@ const ViewPost = () => {
           </button>
         )}
 
+        {isOwner && !isAdopted && (
+          <button 
+            type="button" 
+            className="btn btn-outline-info fw-bold d-flex align-items-center gap-2 px-3"
+            onClick={() => setActiveTab("edit_post")}
+          >
+            Edit <FontAwesomeIcon icon={faPaw} />
+          </button>
+        )}
+       
+
         {isOwner && (
           <button type="button" onClick={onDeleteClick} className="btn btn-outline-danger fw-bold d-flex align-items-center gap-2 px-3">
             <FontAwesomeIcon icon={faTrash} />
           </button>
         )}
-
-        {!isOwner && (
           <button
             type="button"
             className={`btn btn-invisible ${hasLiked ? "txt-liked" : "txt-muted"}`}
@@ -209,7 +220,10 @@ const ViewPost = () => {
                 setSuccessMessage("Please login to like posts! 🐾");
                 return;
               }
-
+               if (isOwner) {
+                setSuccessMessage("You cannot like your own post! 🐾");
+                return;
+              }
               // 2. Already Liked Check
               if (hasLiked) {
                 setSuccessMessage("You have already liked this post! ❤️");
@@ -222,7 +236,6 @@ const ViewPost = () => {
           >
             <FontAwesomeIcon icon={faHeart} size="lg" /> {paw.reactions_count}
           </button>
-        )}
       </div>
     </div>
   );

@@ -22,6 +22,8 @@ const HomePageMiniNav = () => {
   const currentPage = useAppStore((state) => state.currentPage);
   const lastPage = useAppStore((state) => state.lastPage);
 
+  const user = useAppStore((state) => state.user);
+
   /* -------- Handlers -------- */
 
   const handleStatusChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -100,6 +102,7 @@ const HomePageMiniNav = () => {
         type="button"
         className="btn d-flex flex-row gap-2 justify-content-center btn-success text-white fw-bold align-items-center"
         style={{ height: "30px", width: "80px", fontSize: "13px" }}
+        disabled={!user}
         onClick={() => setActiveTab("createPost")}
       >
         Post <FontAwesomeIcon icon={faSquarePlus} />

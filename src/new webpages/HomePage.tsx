@@ -35,7 +35,8 @@ const HomePage = () => {
     } else if (
       activeTab === "home" ||
       activeTab === "featured" ||
-      activeTab === "trending"
+      activeTab === "trending" ||
+      activeTab === "your_posts"
     ) {
       const delayDebounceFn = setTimeout(() => {
         fetchHomePaws(1);

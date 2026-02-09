@@ -68,7 +68,7 @@ interface AppState {
     checkAuthStatus: () => Promise<void>; 
 }
 
-export const useAppStore = create<AppState>((set, get) => ({
+export const useAppStore = create<AppState>((set,   get) => ({
     // Initial Values
     currentImageIndex: 0,
     paws: [],
@@ -121,7 +121,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     },
    fetchHomePaws: async (page = 1) => {
     set({ loading: true });
-    const { searchQuery, selectedCity, activeTab, filterStatus } = get();
+    const { searchQuery, selectedCity, activeTab, filterStatus, user } = get();
     
     // Determine the sort string based on the active tab
     // Logic: If trending -> "trending", Else if featured -> "popular", Else -> "newest"
@@ -131,11 +131,16 @@ export const useAppStore = create<AppState>((set, get) => ({
             : activeTab === "featured" 
                 ? "popular" 
                 : "newest";
+    
+    const userIdFilter = activeTab === "your_posts" ? user?.id : undefined;
 
+
+                
     const result = await getPaws(
         page, 
         searchQuery, 
         selectedCity, 
+        userIdFilter,
         'title', 
         sortCriteria, 
         filterStatus
@@ -195,6 +200,8 @@ export const useAppStore = create<AppState>((set, get) => ({
                 isPostDisplayed: false,
             }));
             get().setSuccessMessage("Post deleted successfully! 🐾");
+
+            get().fetchStats(); 
         }
     },
 
@@ -204,7 +211,8 @@ export const useAppStore = create<AppState>((set, get) => ({
         
         if (res.success && res.user) {
             set({ user: res.user });
-            get().setSuccessMessage(`Welcome to the family, ${res.user.name}! 🐾`);
+            get().setSuccessMessage(`Welcome to Home4Paws, ${res.user.name}! 🐾`);
+            get().fetchStats(); 
             return true;
         } else {
             // Note: Alerts are handled in the component for better UX, 
@@ -258,6 +266,7 @@ export const useAppStore = create<AppState>((set, get) => ({
                     : state.activePaw,
             }));
             get().setSuccessMessage("Status updated to Adopted! 🎉");
+             get().fetchStats(); 
         }
     },
     
@@ -276,4 +285,22 @@ export const useAppStore = create<AppState>((set, get) => ({
         const prevIndex = (state.currentImageIndex - 1 + activePaw.photos.length) % activePaw.photos.length;
         return { currentImageIndex: prevIndex, selectedImageUrl: activePaw.photos[prevIndex].photo_url };
     }),
+
+    handleUpdate: async (id: number, updateData: any) => {
+  const { updatePaw } = await import("./api");
+  const result = await updatePaw(id, updateData);
+
+  if (result.success) {
+    set((state) => ({
+      // Update the post in the main list
+      paws: state.paws.map((p) => (p.paws_id === id ? { ...p, ...result.data } : p)),
+      // Update the active view
+      activePaw: { ...state.activePaw, ...result.data },
+    }));
+    get().setSuccessMessage("Post updated! 🐾");
+    get().fetchStats(); // Keep stats fresh
+    return true;
+  }
+  return false;
+},
 }));
