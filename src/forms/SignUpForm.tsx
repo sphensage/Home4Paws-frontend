@@ -20,7 +20,7 @@ const SignUpForm = () => {
 
   const handleNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setter: (val: string) => void
+    setter: (val: string) => void,
   ) => {
     const cleanValue = e.target.value.replace(/[^a-zA-Z\s]/g, "");
     setter(cleanValue);
@@ -30,10 +30,10 @@ const SignUpForm = () => {
     event.preventDefault();
     const form = event.currentTarget;
     const passInput = document.getElementById(
-      "passwordInput"
+      "passwordInput",
     ) as HTMLInputElement;
     const confirmInput = document.getElementById(
-      "confirmPassInput"
+      "confirmPassInput",
     ) as HTMLInputElement;
 
     confirmInput.setCustomValidity("");
@@ -58,9 +58,9 @@ const SignUpForm = () => {
       email: (document.getElementById("emailInput") as HTMLInputElement).value,
       password: password,
       birthdate: `${(document.getElementById("year") as HTMLInputElement).value}-${String(
-        (document.getElementById("month") as HTMLInputElement).value
+        (document.getElementById("month") as HTMLInputElement).value,
       ).padStart(2, "0")}-${String(
-        (document.getElementById("day") as HTMLInputElement).value
+        (document.getElementById("day") as HTMLInputElement).value,
       ).padStart(2, "0")}`,
     };
 
@@ -69,7 +69,9 @@ const SignUpForm = () => {
       const result = await signup(userData);
 
       if (result.success) {
-        setSuccessMessage("Account Created Successfully! Welcome to Home4Paws.");
+        setSuccessMessage(
+          "Account Created Successfully! Welcome to Home4Paws.",
+        );
         navigate("/");
       } else {
         alert("Sign up failed: " + (result.message || "Unknown error"));
@@ -108,18 +110,21 @@ const SignUpForm = () => {
 
   return (
     <form
-      className={`form-bg-box flex-column needs-validation ${
+      className={`form-bg-box flex-column needs-validation p-5 shadow-md ${
         hideTooltips ? "hide-tooltips" : ""
       } ${validated ? "was-validated" : ""}`}
       onSubmit={handleSubmit}
       onInput={handleInput}
       noValidate
     >
-      <img
-        src="/src/assets/faviconFinal3.svg"
-        alt="Home4Paws Logo"
-        className="mb-3"
-      />
+      <a href="/">
+        <img
+          src="/src/assets/favicon.png"
+          style={{ width: "80px", height: "80px" }}
+          alt="Home4Paws Logo"
+          className="mb-3"
+        />
+      </a>
       <p className="fw-bold fs-4 text-center mb-4">
         Create Your PawFinder Account
       </p>
@@ -204,7 +209,10 @@ const SignUpForm = () => {
           Please enter a valid email address.
         </div>
       </div>
-      <label htmlFor="passwordInput" className="form-label w-100 text-start mb-2">
+      <label
+        htmlFor="passwordInput"
+        className="form-label w-100 text-start mb-2"
+      >
         Password
       </label>
       <div className="d-flex flex-row gap-2 mb-3 position-relative">
@@ -241,8 +249,12 @@ const SignUpForm = () => {
       </div>
       <button
         type="submit"
-        className="btn btn-secondary w-100 mt-5"
-        style={{ background: "#8b2e58", border: "0px solid black" }}
+        className="btn btn-secondary w-100 mt-3"
+        style={{
+          background: "#ce7853",
+          border: "0px solid black",
+          height: "40px",
+        }}
         disabled={isSubmitting}
       >
         {isSubmitting ? "Signing Up..." : "Sign Up"}
