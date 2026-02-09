@@ -1,6 +1,6 @@
 .bg {
   background-image:
-    linear-gradient(rgba(139, 46, 88, 0.6), rgba(139, 46, 88, 0.6)),
+    linear-gradient(rgba(87, 40, 65, 0.7), rgba(87, 40, 65, 0.7)),
     url("src/assets/pet_img5_signup.jpg");
   background-position: center;
   background-repeat: no-repeat;
@@ -13,9 +13,9 @@
 
 .form-bg-box {
   align-items: center;
-  background: rgba(255, 255, 255, 1);
+  background: #3b1b2c;
   border-radius: 10px;
-  color: #8b2e58;
+  color: #ffffff;
   display: flex;
   justify-content: center;
   padding: 45px;
